@@ -4,22 +4,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <style>
-.w3-col {padding:4px}
+.w3-col {padding:0px}
 .w3-button, .keypad {width:100%}
 .w3-fifth {width:19.9999%}
-.numkey {background-color: red; color: white}
-.opkey, .spkey {background-color: blue; color: white}
+.numkey, .numkey:hover{background-color:#607d8b!important; color: white!important}
+.opkey, .opkey:hover, .spkey, .spkey:hover {background-color:#616161!important; color: white!important}
 html {height:100%}
 body {display:flex; flex-flow:column; height:100%}
-.display {flex: 1 1 auto; display:flex; flex-flow:column}
-.keypad {flex: 0 0 auto}
+.display {flex: 0 1 auto}
+.keypad {flex: 1 0 auto; font-size: 24px!important; display:flex; flex-flow:column}
 .output {padding:8px}
+.w3-row {flex: 1 1 auto; display:flex; flex-flow:row}
+.w3-col {display:flex; flex-flow:column}
+.w3-button {flex: 1 1 auto}
 </style>
 <body>
 
 <div class="display">
-  <div id="hex" class="output mode-sel w3-large w3-bar w3-blue">0</div>
-  <div id="dec" class="output mode-sel w3-large w3-bar w3-cyan">0</div>
+  <div id="hex" class="output mode-sel w3-large w3-bar w3-indigo">0</div>
+  <div id="dec" class="output mode-sel w3-large w3-bar w3-blue">0</div>
   <div id="bin" class="output w3-large w3-bar w3-teal">0</div>
 </div>
 
@@ -35,7 +38,7 @@ body {display:flex; flex-flow:column; height:100%}
       <button class="w3-button numkey hexkey">F</button>
     </div>
     <div class="w3-col s3">
-      <button class="w3-button spkey">&lt-</button>
+      <button class="w3-button spkey">Del</button>
     </div>
   </div>
 
@@ -101,7 +104,7 @@ body {display:flex; flex-flow:column; height:100%}
 
   <div class="w3-row">
     <div class="w3-col s3">
-      <button class="w3-button spkey">ANS</button>
+      <button class="w3-button spkey">Ans</button>
     </div>
     <div class="w3-col s3">
       <button class="w3-button numkey">0</button>
@@ -192,7 +195,7 @@ function keyClick(key) {
   }
 
   // clear before entry
-  if (clear && key.innerText != "=" && key.innerText != "<-")
+  if (clear && key.innerText != "=" && key.innerText != "Del")
     if (key.className.indexOf('opkey') != -1)
       output.innerText = numString(ans, length)
     else
@@ -212,10 +215,10 @@ function keyClick(key) {
       binout.innerText = numString(ans, 2)
       clear = true
       break;
-    case 'ANS' :
+    case 'Ans' :
       output.innerText += numString(ans, length)
       break;
-    case '<-':
+    case 'Del':
       if (output.innerText.length > 1) {
         output.innerText = output.innerText.slice(0,-1)
       } else {
@@ -231,7 +234,7 @@ function keyClick(key) {
 buttons = document.getElementsByClassName('w3-button')
 // Set aspect ration to 2/3
 for (i=0; i< buttons.length; i++) {
-  buttons[i].style.height = buttons[i].clientWidth*2/3 + "px"
+  //buttons[i].style.height = buttons[i].clientWidth*2/3 + "px"
   buttons[i].onclick = function() { keyClick(this); };
 }
 // Find all the output
@@ -241,7 +244,7 @@ for (i=0; i< outputs.length; i++) {
   outputs[i].onclick = function() { updateMode(this); };
   console.log("set output")
 }
-// Set inital mode
+// Set initial mode
 updateMode(document.getElementById('dec'))
 </script>
 
