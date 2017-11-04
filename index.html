@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<title>W3.CSS</title>
+<title>HexCalc</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <style>
@@ -203,7 +203,7 @@ function keyClick(key) {
       clear = true
       break;
     case 'ANS' :
-      output.innerText += numString(ans)
+      output.innerText += numString(ans, length)
       break;
     case '<-':
       if (output.innerText.length > 1) {
