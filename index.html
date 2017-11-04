@@ -224,8 +224,8 @@ function keyClick(key) {
   switch (key.innerText) {
     case '=' : 
       cmd = output.innerText.replace(/\b([A-F0-9]+)/g,repl)
-                            .replace(/([^0-9A-F]|^)√([0-9A-F]*)/g, "$1($2**(1/2))")
-                            .replace(/([0-9A-F]*)√([0-9A-F]*)/g, "($2**(1/$1))")
+                            .replace(/([^0-9A-Fx]|^)√([0-9A-Fx]*)/g, "$1($2**(1/2))")
+                            .replace(/([0-9A-Fx]*)√([0-9A-Fx]*)/g, "($2**(1/$1))")
       console.log(cmd)
       ans = eval(cmd)
       output.innerText = numString(ans, length)
