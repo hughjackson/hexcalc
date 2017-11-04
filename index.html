@@ -6,27 +6,144 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <style>
 .w3-col {padding:0px}
-.w3-button, .keypad {width:100%}
+.w3-button, #keypad {width:100%}
 .w3-fifth {width:19.9999%}
+.w3-eighth {width:12.4999%}
 .numkey, .numkey:hover{background-color:#607d8b!important; color: white!important}
 .opkey, .opkey:hover, .spkey, .spkey:hover, .pukey, .pukey:hover {background-color:#616161!important; color: white!important}
 body {display:flex; flex-flow:column; height:100vh}
-.display {flex: 0 1 auto}
-.keypad {flex: 1 0 auto; font-size: 24px!important; display:flex; flex-flow:column}
+#display {flex: 0 1 auto}
+#keypad, #binpad {flex: 1 0 auto; font-size: 24px!important; flex-flow:column}
+#keypad {display:flex}
+#binpad {display:none}
 .output {padding:8px}
 .w3-row {flex: 1 1 auto; display:flex; flex-flow:row}
 .w3-col {display:flex; flex-flow:column}
 .w3-button {flex: 1 1 auto}
+body {counter-reset: section 32}
+#binpad .numkey::before {
+    counter-increment: section -1;
+    content: counter(section);
+    display: block;
+    font-size: 12px!important;
+}
 </style>
 <body>
 
-<div class="display">
+<div id="display">
   <div id="hex" class="output mode-sel w3-large w3-bar w3-indigo">0</div>
   <div id="dec" class="output mode-sel w3-large w3-bar w3-blue">0</div>
-  <div id="bin" class="output w3-large w3-bar w3-teal">0</div>
+  <div id="bin" class="output mode-sel w3-large w3-bar w3-teal">0</div>
 </div>
 
-<div class="keypad">
+<div id="binpad">
+  <div class="w3-row">
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey">1</button>
+    </div>
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey">1</button>
+    </div>
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey">1</button>
+    </div>
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey">1</button>
+    </div>
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey">1</button>
+    </div>
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey">1</button>
+    </div>
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey">1</button>
+    </div>
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey">1</button>
+    </div>
+  </div>
+  <div class="w3-row">
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey">1</button>
+    </div>
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey">1</button>
+    </div>
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey">1</button>
+    </div>
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey">1</button>
+    </div>
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey">1</button>
+    </div>
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey">1</button>
+    </div>
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey">1</button>
+    </div>
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey">1</button>
+    </div>
+  </div>
+  <div class="w3-row">
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey">1</button>
+    </div>
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey">1</button>
+    </div>
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey">1</button>
+    </div>
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey">1</button>
+    </div>
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey">1</button>
+    </div>
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey">1</button>
+    </div>
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey">1</button>
+    </div>
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey">1</button>
+    </div>
+  </div>
+  <div class="w3-row">
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey">1</button>
+    </div>
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey">1</button>
+    </div>
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey">1</button>
+    </div>
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey">1</button>
+    </div>
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey">1</button>
+    </div>
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey">1</button>
+    </div>
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey">1</button>
+    </div>
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey">1</button>
+    </div>
+  </div>
+</div>
+
+<div id="keypad">
   <div class="w3-row">
     <div class="w3-col s3">
       <button class="w3-button pukey">(</button>
@@ -175,17 +292,32 @@ function updateMode(op) {
   for (i=0; i< buttons.length; i++) {
     buttons[i].disabled = false
   }
-  if (mode != 'hex') {
-    buttons = document.getElementsByClassName('hexkey')
+  if (mode != "hex") {
+    buttons = document.getElementsByClassName("hexkey")
     for (i=0; i< buttons.length; i++) {
       buttons[i].disabled = true
     }
   } 
-  if (mode != 'dec') {
-    buttons = document.getElementsByClassName('deckey')
+  if (mode != "dec") {
+    buttons = document.getElementsByClassName("deckey")
     for (i=0; i< buttons.length; i++) {
       buttons[i].disabled = true
     }
+  }
+
+  if (mode == "bin") {
+    document.getElementById("keypad").style.display = "none"
+    document.getElementById("binpad").style.display = "flex"
+
+    // update button values
+    ext = ("0".repeat(32) + document.getElementById('bin').innerText.replace("_","")).slice(-32)
+    btns = document.getElementById("binpad").getElementsByClassName("numkey")
+    for (i = 0; i < btns.length; i++) {
+      btns[i].innerText = ext[i]
+    }
+  } else {
+    document.getElementById("keypad").style.display = "flex"
+    document.getElementById("binpad").style.display = "none"
   }
 }
 
@@ -195,7 +327,19 @@ function keyClick(key) {
   decout = document.getElementById('dec')
   binout = document.getElementById('bin')
 
-  if (mode == "hex") {
+  if (mode == "bin") {
+    key.innerText ^= 1
+    btns = document.getElementById("binpad").getElementsByClassName("numkey")
+    for (i = 0; i < btns.length; i++) {
+      if (key == btns[i]) {
+        ans ^= 2 ** (31 - i)
+        hexout.innerText = numString(ans, 16)
+        decout.innerText = numString(ans, 10)
+        binout.innerText = numString(ans, 2)
+      }
+    }
+    return
+  } else if (mode == "hex") {
     output = hexout
     length = 16
     other  = decout
