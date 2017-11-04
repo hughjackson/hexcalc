@@ -127,7 +127,17 @@ function numString(num, radix) {
     if (num > (2**31-1)) num = num-2**32
     return num.toString(radix)
   }
-  return (num >>> 0).toString(radix).toUpperCase()
+  str = (num >>> 0).toString(radix).toUpperCase()
+  // zero pad
+  if (radix == 2)
+    str = "000" + str
+  else
+    str = "   " + str
+  str = str.slice(str.length % 4)
+  // add underscores
+  str = str.replace(/(....)\B/g, "$1_")
+  str = str.replace(/ /g, "")
+  return str
 }
 
 // Update the mode
