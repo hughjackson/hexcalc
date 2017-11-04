@@ -2,13 +2,14 @@
 <html>
 <title>HexCalc</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#3f51b5">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <style>
 .w3-col {padding:0px}
 .w3-button, .keypad {width:100%}
 .w3-fifth {width:19.9999%}
 .numkey, .numkey:hover{background-color:#607d8b!important; color: white!important}
-.opkey, .opkey:hover, .spkey, .spkey:hover {background-color:#616161!important; color: white!important}
+.opkey, .opkey:hover, .spkey, .spkey:hover, .pukey, .pukey:hover {background-color:#616161!important; color: white!important}
 body {display:flex; flex-flow:column; height:100vh}
 .display {flex: 0 1 auto}
 .keypad {flex: 1 0 auto; font-size: 24px!important; display:flex; flex-flow:column}
@@ -26,6 +27,21 @@ body {display:flex; flex-flow:column; height:100vh}
 </div>
 
 <div class="keypad">
+  <div class="w3-row">
+    <div class="w3-col s3">
+      <button class="w3-button pukey">(</button>
+    </div>
+    <div class="w3-col s3">
+      <button class="w3-button pukey">)</button>
+    </div>
+    <div class="w3-col s3">
+      <button class="w3-button pukey">&Sqrt;</button>
+    </div>
+    <div class="w3-col s3">
+      <button class="w3-button opkey">**</button>
+    </div>
+  </div>
+
   <div class="w3-row">
     <div class="w3-col s3">
       <button class="w3-button numkey hexkey">D</button>
@@ -207,8 +223,11 @@ function keyClick(key) {
 
   switch (key.innerText) {
     case '=' : 
-      ans = eval(output.innerText.replace(/\b([A-F0-9]+)/g,repl))
-      console.log(ans)
+      cmd = output.innerText.replace(/\b([A-F0-9]+)/g,repl)
+                            .replace(/([^0-9A-F]|^)√([0-9A-F]*)/g, "$1($2**(1/2))")
+                            .replace(/([0-9A-F]*)√([0-9A-F]*)/g, "($2**(1/$1))")
+      console.log(cmd)
+      ans = eval(cmd)
       output.innerText = numString(ans, length)
       other.innerText = numString(ans, olen)
       binout.innerText = numString(ans, 2)
