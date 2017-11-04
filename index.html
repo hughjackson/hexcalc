@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<title>W3.CSS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<style>
+.w3-col {padding:4px}
+.w3-button, .keypad {width:100%}
+.w3-fifth {width:19.9999%}
+.numkey {background-color: red; color: white}
+.opkey, .spkey {background-color: blue; color: white}
+html {height:100%}
+body {display:flex; flex-flow:column; height:100%}
+.display {flex: 1 1 auto; display:flex; flex-flow:column}
+.keypad {flex: 0 0 auto}
+.output {padding:8px}
+</style>
+<body>
+
+<div class="display">
+  <div id="hex" class="output mode-sel w3-large w3-bar w3-blue">0</div>
+  <div id="dec" class="output mode-sel w3-large w3-bar w3-cyan">0</div>
+  <div id="bin" class="output w3-large w3-bar w3-teal">0</div>
+</div>
+
+<div class="keypad">
+  <div class="w3-row">
+    <div class="w3-col s3">
+      <button class="w3-button numkey hexkey">D</button>
+    </div>
+    <div class="w3-col s3">
+      <button class="w3-button numkey hexkey">E</button>
+    </div>
+    <div class="w3-col s3">
+      <button class="w3-button numkey hexkey">F</button>
+    </div>
+    <div class="w3-col s3">
+      <button class="w3-button spkey">&lt-</button>
+    </div>
+  </div>
+
+  <div class="w3-row">
+    <div class="w3-col s3">
+      <button class="w3-button numkey hexkey">A</button>
+    </div>
+    <div class="w3-col s3">
+      <button class="w3-button numkey hexkey">B</button>
+    </div>
+    <div class="w3-col s3">
+      <button class="w3-button numkey hexkey">C</button>
+    </div>
+    <div class="w3-col s3">
+      <button class="w3-button opkey">/</button>
+    </div>
+  </div>
+
+  <div class="w3-row">
+    <div class="w3-col s3">
+      <button class="w3-button numkey">7</button>
+    </div>
+    <div class="w3-col s3">
+      <button class="w3-button numkey">8</button>
+    </div>
+    <div class="w3-col s3">
+      <button class="w3-button numkey">9</button>
+    </div>
+    <div class="w3-col s3">
+      <button class="w3-button opkey">*</button>
+    </div>
+  </div>
+
+  <div class="w3-row">
+    <div class="w3-col s3">
+      <button class="w3-button numkey">4</button>
+    </div>
+    <div class="w3-col s3">
+      <button class="w3-button numkey">5</button>
+    </div>
+    <div class="w3-col s3">
+      <button class="w3-button numkey">6</button>
+    </div>
+    <div class="w3-col s3">
+      <button class="w3-button opkey">-</button>
+    </div>
+  </div>
+
+  <div class="w3-row">
+    <div class="w3-col s3">
+      <button class="w3-button numkey">1</button>
+    </div>
+    <div class="w3-col s3">
+      <button class="w3-button numkey">2</button>
+    </div>
+    <div class="w3-col s3">
+      <button class="w3-button numkey">3</button>
+    </div>
+    <div class="w3-col s3">
+      <button class="w3-button opkey">+</button>
+    </div>
+  </div>
+
+  <div class="w3-row">
+    <div class="w3-col s3">
+      <button class="w3-button spkey">ANS</button>
+    </div>
+    <div class="w3-col s3">
+      <button class="w3-button numkey">0</button>
+    </div>
+    <div class="w3-col s3">
+      <button class="w3-button numkey deckey">.</button>
+    </div>
+    <div class="w3-col s3">
+      <button class="w3-button spkey">=</button>
+    </div>
+  </div>
+</div>
+
+<script>
+ans=0
+clear=true
+mode='dec'
+
+// Number to string
+function numString(num, radix) {
+  console.log("convert " + num + " to " + radix)
+  if (radix == 10) {
+    if (num > (2**31-1)) num = num-2**32
+    return num.toString(radix)
+  }
+  return (num >>> 0).toString(radix).toUpperCase()
+}
+
+// Update the mode
+function updateMode(op) {
+  console.log("Update mode")
+  mode = op.id
+  clear = true
+
+  // Find all the output
+  outputs = document.getElementsByClassName('output')
+  for (i=0; i< outputs.length; i++) {
+    outputs[i].style.setProperty("font-size", "18px", "important")
+  }
+  document.getElementById(mode).style.setProperty("font-size", "36px", "important")
+
+  buttons = document.getElementsByClassName('numkey')
+  for (i=0; i< buttons.length; i++) {
+    buttons[i].disabled = false
+  }
+  if (mode != 'hex') {
+    buttons = document.getElementsByClassName('hexkey')
+    for (i=0; i< buttons.length; i++) {
+      buttons[i].disabled = true
+    }
+  } 
+  if (mode != 'dec') {
+    buttons = document.getElementsByClassName('deckey')
+    for (i=0; i< buttons.length; i++) {
+      buttons[i].disabled = true
+    }
+  }
+}
+
+// Button click function
+function keyClick(key) {
+  hexout = document.getElementById('hex')
+  decout = document.getElementById('dec')
+  binout = document.getElementById('bin')
+
+  if (mode == "hex") {
+    output = hexout
+    length = 16
+    other  = decout
+    olen   = 10
+    repl   = "0x$1"
+  } else {
+    output = decout
+    length = 10
+    other  = hexout
+    olen   = 16
+    repl   = "$1"
+  }
+
+  // clear before entry
+  if (clear && key.innerText != "=" && key.innerText != "<-")
+    if (key.className.indexOf('opkey') != -1)
+      output.innerText = numString(ans, length)
+    else
+      output.innerText = ""
+    clear = false
+
+  if (key.className.indexOf('spkey') == -1) {
+    output.innerText += key.innerText
+  }
+
+  switch (key.innerText) {
+    case '=' : 
+      ans = eval(output.innerText.replace(/\b([A-F0-9]+)/g,repl))
+      console.log(ans)
+      output.innerText = numString(ans, length)
+      other.innerText = numString(ans, olen)
+      binout.innerText = numString(ans, 2)
+      clear = true
+      break;
+    case 'ANS' :
+      output.innerText += numString(ans)
+      break;
+    case '<-':
+      if (output.innerText.length > 1) {
+        output.innerText = output.innerText.slice(0,-1)
+      } else {
+        output.innerText = "0"
+        clear = true;
+      }
+      break;
+    default:
+  }
+}
+
+// Find all the button
+buttons = document.getElementsByClassName('w3-button')
+// Set aspect ration to 2/3
+for (i=0; i< buttons.length; i++) {
+  buttons[i].style.height = buttons[i].clientWidth*2/3 + "px"
+  buttons[i].onclick = function() { keyClick(this); };
+}
+// Find all the output
+outputs = document.getElementsByClassName('mode-sel')
+// Set aspect ration to 2/3
+for (i=0; i< outputs.length; i++) {
+  outputs[i].onclick = function() { updateMode(this); };
+  console.log("set output")
+}
+// Set inital mode
+updateMode(document.getElementById('dec'))
+</script>
+
+</body>
+</html>
+
