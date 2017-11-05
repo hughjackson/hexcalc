@@ -27,6 +27,8 @@ body {counter-reset: section 32}
     display: block;
     font-size: 12px!important;
 }
+#color-row {color:white}
+#color-row div {padding:8px; text-align: center}
 </style>
 <body>
 
@@ -37,6 +39,12 @@ body {counter-reset: section 32}
 </div>
 
 <div id="binpad">
+  <div class="w3-row" id="color-row">
+    <div id="rgb"  class="w3-col s3">RGB</div>
+    <div id="rgba" class="w3-col s3">RGBA</div>
+    <div id="bgr"  class="w3-col s3">BGR</div>
+    <div id="bgra" class="w3-col s3">BGRA</div>
+  </div>
   <div class="w3-row">
     <div class="w3-col w3-eighth">
       <button class="w3-button numkey">1</button>
@@ -275,6 +283,30 @@ function numString(num, radix) {
   return str
 }
 
+function contrast(r,g,b) {
+  o = Math.round(((parseInt(r, 16) * 299) +
+                  (parseInt(g, 16) * 587) +
+                  (parseInt(b, 16) * 114)) / 1000);
+  return (o > 125) ? 'black' : 'white'
+}
+
+// Update color row
+function updateColorRow() {
+  a = ("0000000" + document.getElementById("hex").innerText.replace(/_/g,"")).slice(-8, -6)
+  b = ("00000"   + document.getElementById("hex").innerText.replace(/_/g,"")).slice(-6, -4)
+  c = ("000"     + document.getElementById("hex").innerText.replace(/_/g,"")).slice(-4, -2)
+  d = ("0"       + document.getElementById("hex").innerText.replace(/_/g,"")).slice(-2)
+  document.getElementById("rgb" ).style.backgroundColor = "#"+b+c+d
+  document.getElementById("rgba").style.backgroundColor = "#"+a+b+c
+  document.getElementById("bgr" ).style.backgroundColor = "#"+d+c+b
+  document.getElementById("bgra").style.backgroundColor = "#"+c+b+a
+
+  document.getElementById("rgb" ).style.color = contrast(b, c, d)
+  document.getElementById("rgba").style.color = contrast(a, b, c)
+  document.getElementById("bgr" ).style.color = contrast(d, c, b)
+  document.getElementById("bgra").style.color = contrast(c, b, a)
+}
+
 // Update the mode
 function updateMode(op) {
   console.log("Update mode")
@@ -315,6 +347,9 @@ function updateMode(op) {
     for (i = 0; i < btns.length; i++) {
       btns[i].innerText = ext[i]
     }
+
+    // update color row
+    updateColorRow()
   } else {
     document.getElementById("keypad").style.display = "flex"
     document.getElementById("binpad").style.display = "none"
@@ -338,6 +373,9 @@ function keyClick(key) {
         binout.innerText = numString(ans, 2)
       }
     }
+
+    // update color row
+    updateColorRow()
     return
   } else if (mode == "hex") {
     output = hexout
