@@ -49,7 +49,7 @@ body {counter-reset: section 32}
       <button id='bin' class="w3-button mode-sel">Bin</button>
     </div>
     <div class="w3-col s3">
-      <button id='pad' class="w3-button mode-sel">Pad</button>
+      <button id='pad' class="w3-button pad-sel">Bin Pad</button>
     </div>
   </div>
 </div>
@@ -334,10 +334,12 @@ function contrast(r,g,b) {
 
 // Update color row
 function updateColorRow() {
-  a = ("0000000" + document.getElementById("hex").innerText.replace(/_/g,"")).slice(-8, -6)
-  b = ("00000"   + document.getElementById("hex").innerText.replace(/_/g,"")).slice(-6, -4)
-  c = ("000"     + document.getElementById("hex").innerText.replace(/_/g,"")).slice(-4, -2)
-  d = ("0"       + document.getElementById("hex").innerText.replace(/_/g,"")).slice(-2)
+  hexval = numString(ans, 16).replace(/0x/,'').replace(/_/g,"")
+
+  a = ("0000000" + hexval).slice(-8, -6)
+  b = ("00000"   + hexval).slice(-6, -4)
+  c = ("000"     + hexval).slice(-4, -2)
+  d = ("0"       + hexval).slice(-2)
   document.getElementById("rgb" ).style.backgroundColor = "#"+b+c+d
   document.getElementById("rgba").style.backgroundColor = "#"+a+b+c
   document.getElementById("bgr" ).style.backgroundColor = "#"+d+c+b
@@ -380,13 +382,22 @@ function updateMode(op) {
   decout = document.getElementById('disp')
   decout.innerText = numString(ans, mode == 'dec' ? 10 : mode == 'hex' ? 16 : 2)
 
+  updateKeyMode('dec')
 
-  if (mode == "pad") {
+}
+// Update the mode
+function updatePadMode(op) {
+
+  binPad = !binPad
+
+  binVal = numString(ans, 2)
+
+  if (binPad) {
     document.getElementById("keypad").style.display = "none"
     document.getElementById("binpad").style.display = "flex"
 
     // update button values
-    ext = ("0".repeat(32) + decout.innerText.replace(/_/g,"").replace(/0b/g,"")).slice(-32)
+    ext = ("0".repeat(32) + binVal.replace(/_/g,"").replace(/0b/g,"")).slice(-32)
     btns = document.getElementById("binpad").getElementsByClassName("numkey")
     for (i = 0; i < btns.length; i++) {
       btns[i].innerText = ext[i]
@@ -394,12 +405,13 @@ function updateMode(op) {
 
     // update color row
     updateColorRow()
+    op.innerText = 'Num Pad'
   } else {
     document.getElementById("keypad").style.display = "flex"
     document.getElementById("binpad").style.display = "none"
+    op.innerText = 'Bin Pad'
   }
 
-  updateKeyMode('dec')
 
 }
 
@@ -418,7 +430,7 @@ function parseNum(str, radix) {
 function keyClick(key) {
   decout = document.getElementById('disp')
 
-  if (mode == "pad") {
+  if (binPad) {
     key.innerText ^= 1
     btns = document.getElementById("binpad").getElementsByClassName("numkey")
     for (i = 0; i < btns.length; i++) {
@@ -515,6 +527,12 @@ for (i=0; i< outputs.length; i++) {
 }
 // Set initial mode
 updateMode(document.getElementById('dec'))
+
+outputs = document.getElementsByClassName('pad-sel')
+for (i=0; i< outputs.length; i++) {
+  outputs[i].onclick = function() { updatePadMode(this); };
+}
+binPad = false
 
 // Set height to avoid scroll on android
 document.body.style.height = window.innerHeight + "px"
