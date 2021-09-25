@@ -377,12 +377,16 @@ function updateMode(op) {
   }
   op.style.backgroundColor = '#ccc'
 
+  decout = document.getElementById('disp')
+  decout.innerText = numString(ans, mode == 'dec' ? 10 : mode == 'hex' ? 16 : 2)
+
+
   if (mode == "pad") {
     document.getElementById("keypad").style.display = "none"
     document.getElementById("binpad").style.display = "flex"
 
     // update button values
-    ext = ("0".repeat(32) + document.getElementById('disp').innerText.replace(/_/g,"").replace(/0b/g,"")).slice(-32)
+    ext = ("0".repeat(32) + decout.innerText.replace(/_/g,"").replace(/0b/g,"")).slice(-32)
     btns = document.getElementById("binpad").getElementsByClassName("numkey")
     for (i = 0; i < btns.length; i++) {
       btns[i].innerText = ext[i]
@@ -394,9 +398,6 @@ function updateMode(op) {
     document.getElementById("keypad").style.display = "flex"
     document.getElementById("binpad").style.display = "none"
   }
-
-  decout = document.getElementById('disp')
-  decout.innerText = numString(ans, mode == 'dec' ? 10 : mode == 'hex' ? 16 : 2)
 
   updateKeyMode('dec')
 
