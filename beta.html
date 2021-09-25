@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html>
+<title>HexCalc</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#3f51b5">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<style>
+.w3-col {padding:0px}
+.w3-button, #keypad {width:100%}
+.w3-fifth {width:19.9999%}
+.w3-eighth {width:12.4999%}
+.numkey, .numkey:hover{background-color:#607d8b!important; color: white!important}
+.opkey, .opkey:hover, .spkey, .spkey:hover, .pukey, .pukey:hover {background-color:#616161!important; color: white!important}
+body {display:flex; flex-flow:column; height:100vh}
+#display {flex: 0 1 auto}
+#keypad, #binpad {flex: 1 0 auto; font-size: 24px!important; flex-flow:column}
+#keypad {display:flex}
+#binpad {display:none}
+.output {padding:8px;}
+.w3-row {flex: 1 1 auto; display:flex; flex-flow:row}
+.w3-col {display:flex; flex-flow:column}
+.w3-button {flex: 1 1 auto}
+body {counter-reset: section 32}
+#binpad .numkey::before {
+    counter-increment: section -1;
+    content: counter(section);
+    display: block;
+    font-size: 12px!important;
+}
+#color-row {color:white}
+#color-row div {padding:8px; text-align: center}
+</style>
+<body>
+
+<div id="display">
+  <div id="disp" class="output w3-xxlarge w3-bar w3-indigo">0</div>
+</div>
+
+<div>
+  <div class="w3-row">
+    <div class="w3-col s3">
+      <button id='dec' class="w3-button mode-sel">Dec</button>
+    </div>
+    <div class="w3-col s3">
+      <button id='hex' class="w3-button mode-sel">Hex</button>
+    </div>
+    <div class="w3-col s3">
+      <button id='bin' class="w3-button mode-sel">Bin</button>
+    </div>
+    <div class="w3-col s3">
+      <button id='pad' class="w3-button mode-sel">Pad</button>
+    </div>
+  </div>
+</div>
+
+
+<div id="binpad">
+  <div class="w3-row" id="color-row">
+    <div id="rgb"  class="w3-col s3">RGB</div>
+    <div id="rgba" class="w3-col s3">RGBA</div>
+    <div id="bgr"  class="w3-col s3">BGR</div>
+    <div id="bgra" class="w3-col s3">BGRA</div>
+  </div>
+  <div class="w3-row">
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey padkey">1</button>
+    </div>
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey padkey">1</button>
+    </div>
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey padkey">1</button>
+    </div>
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey padkey">1</button>
+    </div>
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey padkey">1</button>
+    </div>
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey padkey">1</button>
+    </div>
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey padkey">1</button>
+    </div>
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey padkey">1</button>
+    </div>
+  </div>
+  <div class="w3-row">
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey padkey">1</button>
+    </div>
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey padkey">1</button>
+    </div>
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey padkey">1</button>
+    </div>
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey padkey">1</button>
+    </div>
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey padkey">1</button>
+    </div>
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey padkey">1</button>
+    </div>
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey padkey">1</button>
+    </div>
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey padkey">1</button>
+    </div>
+  </div>
+  <div class="w3-row">
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey padkey">1</button>
+    </div>
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey padkey">1</button>
+    </div>
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey padkey">1</button>
+    </div>
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey padkey">1</button>
+    </div>
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey padkey">1</button>
+    </div>
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey padkey">1</button>
+    </div>
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey padkey">1</button>
+    </div>
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey padkey">1</button>
+    </div>
+  </div>
+  <div class="w3-row">
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey padkey">1</button>
+    </div>
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey padkey">1</button>
+    </div>
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey padkey">1</button>
+    </div>
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey padkey">1</button>
+    </div>
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey padkey">1</button>
+    </div>
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey padkey">1</button>
+    </div>
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey padkey">1</button>
+    </div>
+    <div class="w3-col w3-eighth">
+      <button class="w3-button numkey padkey">1</button>
+    </div>
+  </div>
+</div>
+
+<div id="keypad">
+  <div class="w3-row">
+    <div class="w3-col s3">
+      <button class="w3-button pukey">(</button>
+    </div>
+    <div class="w3-col s3">
+      <button class="w3-button pukey">)</button>
+    </div>
+    <div class="w3-col s3">
+      <button class="w3-button pukey">&Sqrt;</button>
+    </div>
+    <div class="w3-col s3">
+      <button class="w3-button opkey">**</button>
+    </div>
+  </div>
+
+  <div class="w3-row">
+    <div class="w3-col s3">
+      <button class="w3-button pukey">0x</button>
+    </div>
+    <div class="w3-col s3">
+      <button class="w3-button pukey">0b</button>
+    </div>
+    <div class="w3-col s3">
+      <button class="w3-button opkey"></button>
+    </div>
+    <div class="w3-col s3">
+      <button class="w3-button opkey"></button>
+    </div>
+  </div>
+
+  <div class="w3-row">
+    <div class="w3-col s3">
+      <button class="w3-button numkey hexkey">D</button>
+    </div>
+    <div class="w3-col s3">
+      <button class="w3-button numkey hexkey">E</button>
+    </div>
+    <div class="w3-col s3">
+      <button class="w3-button numkey hexkey">F</button>
+    </div>
+    <div class="w3-col s3">
+      <button class="w3-button spkey">Del</button>
+    </div>
+  </div>
+
+  <div class="w3-row">
+    <div class="w3-col s3">
+      <button class="w3-button numkey hexkey">A</button>
+    </div>
+    <div class="w3-col s3">
+      <button class="w3-button numkey hexkey">B</button>
+    </div>
+    <div class="w3-col s3">
+      <button class="w3-button numkey hexkey">C</button>
+    </div>
+    <div class="w3-col s3">
+      <button class="w3-button opkey">/</button>
+    </div>
+  </div>
+
+  <div class="w3-row">
+    <div class="w3-col s3">
+      <button class="w3-button numkey hexkey deckey">7</button>
+    </div>
+    <div class="w3-col s3">
+      <button class="w3-button numkey hexkey deckey">8</button>
+    </div>
+    <div class="w3-col s3">
+      <button class="w3-button numkey hexkey deckey">9</button>
+    </div>
+    <div class="w3-col s3">
+      <button class="w3-button opkey">*</button>
+    </div>
+  </div>
+
+  <div class="w3-row">
+    <div class="w3-col s3">
+      <button class="w3-button numkey hexkey deckey">4</button>
+    </div>
+    <div class="w3-col s3">
+      <button class="w3-button numkey hexkey deckey">5</button>
+    </div>
+    <div class="w3-col s3">
+      <button class="w3-button numkey hexkey deckey">6</button>
+    </div>
+    <div class="w3-col s3">
+      <button class="w3-button opkey">-</button>
+    </div>
+  </div>
+
+  <div class="w3-row">
+    <div class="w3-col s3">
+      <button class="w3-button numkey hexkey deckey binkey">1</button>
+    </div>
+    <div class="w3-col s3">
+      <button class="w3-button numkey hexkey deckey">2</button>
+    </div>
+    <div class="w3-col s3">
+      <button class="w3-button numkey hexkey deckey">3</button>
+    </div>
+    <div class="w3-col s3">
+      <button class="w3-button opkey">+</button>
+    </div>
+  </div>
+
+  <div class="w3-row">
+    <div class="w3-col s3">
+      <button class="w3-button spkey">Ans</button>
+    </div>
+    <div class="w3-col s3">
+      <button class="w3-button numkey hexkey deckey binkey">0</button>
+    </div>
+    <div class="w3-col s3">
+      <button class="w3-button numkey hexkey deckey binkey">.</button>
+    </div>
+    <div class="w3-col s3">
+      <button class="w3-button spkey">=</button>
+    </div>
+  </div>
+</div>
+
+<script>
+ans=0
+clear=true
+mode='dec'
+
+// Number to string
+function numString(num, radix) {
+  console.log("convert " + num + " to " + radix)
+  if (radix == 10) {
+    if (num > (2**31-1)) num = num-2**32
+    return num.toString(radix)
+  }
+  str = num.toString(radix).toUpperCase()
+  // zero pad
+  if (radix == 2)
+    str = "000" + str
+  else
+    str = "   " + str
+  int = str.replace(/\..*/,'')
+  frac = str.replace(/.*\./,'')
+  if (frac == int) frac = ''
+  // pad integer digits to multiple of 4
+  int = int.slice(int.length % 4)
+  // add underscores
+  str = int.replace(/(....)\B/g, "$1_")
+  str = str.replace(/ /g, "")
+
+  if (frac.length) {
+    str = str + '.' + frac.replace(/(....)\B/g, "$1_")
+  }
+  if (radix == 2) return '0b'+str
+  if (radix == 16) return '0x'+str
+  return str
+}
+
+function contrast(r,g,b) {
+  o = Math.round(((parseInt(r, 16) * 299) +
+                  (parseInt(g, 16) * 587) +
+                  (parseInt(b, 16) * 114)) / 1000);
+  return (o > 125) ? 'black' : 'white'
+}
+
+// Update color row
+function updateColorRow() {
+  a = ("0000000" + document.getElementById("hex").innerText.replace(/_/g,"")).slice(-8, -6)
+  b = ("00000"   + document.getElementById("hex").innerText.replace(/_/g,"")).slice(-6, -4)
+  c = ("000"     + document.getElementById("hex").innerText.replace(/_/g,"")).slice(-4, -2)
+  d = ("0"       + document.getElementById("hex").innerText.replace(/_/g,"")).slice(-2)
+  document.getElementById("rgb" ).style.backgroundColor = "#"+b+c+d
+  document.getElementById("rgba").style.backgroundColor = "#"+a+b+c
+  document.getElementById("bgr" ).style.backgroundColor = "#"+d+c+b
+  document.getElementById("bgra").style.backgroundColor = "#"+c+b+a
+
+  document.getElementById("rgb" ).style.color = contrast(b, c, d)
+  document.getElementById("rgba").style.color = contrast(a, b, c)
+  document.getElementById("bgr" ).style.color = contrast(d, c, b)
+  document.getElementById("bgra").style.color = contrast(c, b, a)
+}
+
+// Update the mode for keys only
+function updateKeyMode(mode) {
+  console.log(`updateKeyMode(${mode})`)
+  buttons = document.getElementsByClassName('numkey')
+  for (i=0; i< buttons.length; i++) {
+    buttons[i].disabled = true
+  }
+  buttons = document.getElementsByClassName(mode+'key')
+  for (i=0; i< buttons.length; i++) {
+    buttons[i].disabled = false
+  }
+  buttons = document.getElementsByClassName('padkey')
+  for (i=0; i< buttons.length; i++) {
+    buttons[i].disabled = false
+  }
+}
+// Update the mode
+function updateMode(op) {
+  console.log("Update mode", op)
+  mode = op.id
+  clear = true
+
+  btns = document.getElementsByClassName('mode-sel')
+  for (i = 0; i < btns.length; i++) {
+    btns[i].style.backgroundColor = 'white'
+  }
+  op.style.backgroundColor = '#ccc'
+
+  if (mode == "pad") {
+    document.getElementById("keypad").style.display = "none"
+    document.getElementById("binpad").style.display = "flex"
+
+    // update button values
+    ext = ("0".repeat(32) + document.getElementById('disp').innerText.replace(/_/g,"").replace(/0b/g,"")).slice(-32)
+    btns = document.getElementById("binpad").getElementsByClassName("numkey")
+    for (i = 0; i < btns.length; i++) {
+      btns[i].innerText = ext[i]
+    }
+
+    // update color row
+    updateColorRow()
+  } else {
+    document.getElementById("keypad").style.display = "flex"
+    document.getElementById("binpad").style.display = "none"
+  }
+
+  decout = document.getElementById('disp')
+  decout.innerText = numString(ans, mode == 'dec' ? 10 : mode == 'hex' ? 16 : 2)
+
+  updateKeyMode('dec')
+
+}
+
+function parseNum(str, radix) {
+  int = str.replace(/\..*/,'')
+  frac = str.replace(/.*\./,'')
+  if (frac == int) frac = '0'
+  dec = parseInt(int, radix)
+  l = frac.length
+  div = '1'+frac.replace(/./,'0')
+  dec += parseInt(frac, radix) / parseInt(div, radix)
+  return dec;
+}
+
+// Button click function
+function keyClick(key) {
+  decout = document.getElementById('disp')
+
+  if (mode == "pad") {
+    key.innerText ^= 1
+    btns = document.getElementById("binpad").getElementsByClassName("numkey")
+    for (i = 0; i < btns.length; i++) {
+      if (key == btns[i]) {
+        ans ^= 2 ** (31 - i)
+        //hexout.innerText = numString(ans, 16)
+        decout.innerText = numString(ans, mode == 'dec' ? 10 : mode == 'hex' ? 16 : 2)
+        //binout.innerText = numString(ans, 2)
+      }
+    }
+
+    // update color row
+    updateColorRow()
+    return
+  } else if (mode == "hex") {
+    output = decout
+    length = 16
+    repl   = "$1"
+  } else {
+    output = decout
+    length = 10
+    repl   = "$1"
+  }
+  output = decout
+
+  // clear before entry
+  if (clear && key.innerText != "=" && key.innerText != "Del")
+    if (key.className.indexOf('opkey') != -1)
+      output.innerText = numString(ans, length)
+    else
+      output.innerText = ""
+    clear = false
+
+  if (key.className.indexOf('spkey') == -1) {
+    output.innerText += key.innerText
+  }
+
+  // revert to dec if non numkey pushed
+  if (key.className.indexOf('numkey') == -1) {
+    updateKeyMode('dec');
+  }
+
+  switch (key.innerText) {
+    case '=' : 
+      cmd = output.innerText.replace(/_/g, "")
+                            .replace(/0b([01\.]*)/g, "parseNum('$1', 2)")
+                            .replace(/0x([0-9A-F\.]*)/g, "parseNum('$1', 16)")
+                            .replace(/([^0-9A-Fx]|^)√([0-9A-Fx]*)/g, "$1($2**(1/2))")
+                            .replace(/([0-9A-Fx]*)√([0-9A-Fx]*)/g, "($2**(1/$1))")
+      console.log(cmd,output.innerText)
+      ans = eval(cmd)
+      //if (mode == 'hex') ans = eval('0x'+ans)
+      //if (mode == 'bin') ans = eval('0b'+ans)
+      //hexout.innerText = numString(ans, 16)
+      decout.innerText = numString(ans, mode == 'dec' ? 10 : mode == 'hex' ? 16 : 2)
+      //binout.innerText = numString(ans, 2)
+
+      clear = true
+      break;
+    case 'Ans' :
+      output.innerText += numString(ans, length)
+      break;
+    case 'Del':
+      if (output.innerText.length > 1) {
+        output.innerText = output.innerText.slice(0,-1)
+      } else {
+        output.innerText = "0"
+        clear = true;
+      }
+      break;
+    case '0x':
+      updateKeyMode('hex')
+      break;
+    case '0b':
+      updateKeyMode('bin')
+      break
+    default:
+  }
+}
+
+// Find all the button
+buttons = document.getElementsByClassName('w3-button')
+// Set aspect ration to 2/3
+for (i=0; i< buttons.length; i++) {
+  //buttons[i].style.height = buttons[i].clientWidth*2/3 + "px"
+  buttons[i].onclick = function() { keyClick(this); };
+}
+// Find all the output
+outputs = document.getElementsByClassName('mode-sel')
+// Set aspect ration to 2/3
+for (i=0; i< outputs.length; i++) {
+  outputs[i].onclick = function() { updateMode(this); };
+  console.log("set output")
+}
+// Set initial mode
+updateMode(document.getElementById('dec'))
+
+// Set height to avoid scroll on android
+document.body.style.height = window.innerHeight + "px"
+</script>
+
+</body>
+</html>
+
