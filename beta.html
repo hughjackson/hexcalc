@@ -302,6 +302,12 @@ function numString(num, radix) {
     if (num > (2**31-1)) num = num-2**32
     return num.toString(radix)
   }
+  if (num < 0) {
+    num = -num;
+    sign = '-'
+  } else {
+    sign = ''
+  }
   str = num.toString(radix).toUpperCase()
   // zero pad
   if (radix == 2)
@@ -320,9 +326,9 @@ function numString(num, radix) {
   if (frac.length) {
     str = str + '.' + frac.replace(/(....)\B/g, "$1_")
   }
-  if (radix == 2) return '0b'+str
-  if (radix == 16) return '0x'+str
-  return str
+  if (radix == 2) return sign+'0b'+str
+  if (radix == 16) return sign+'0x'+str
+  return sign+str
 }
 
 function contrast(r,g,b) {
@@ -390,11 +396,15 @@ function updatePadMode(op) {
 
   binPad = !binPad
 
+  if (binPad && ans < 0) {
+    ans += 2**32
+  }
   binVal = numString(ans, 2)
 
   if (binPad) {
     document.getElementById("keypad").style.display = "none"
     document.getElementById("binpad").style.display = "flex"
+    
 
     // update button values
     ext = ("0".repeat(32) + binVal.replace(/_/g,"").replace(/0b/g,"")).slice(-32)
