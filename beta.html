@@ -35,9 +35,9 @@ body {counter-reset: section 32}
 <body>
 
 <div id="display">
-  <div id="hist" class="output w3-large w3-bar w3-indigo">-</div>
+  <div id="hist" class="output w3-large w3-bar w3-indigo">&nbsp</div>
   <div id="disp" class="output w3-xxlarge w3-bar w3-indigo">0</div>
-  <div id="prev" class="output w3-large w3-bar w3-indigo">0</div>
+  <div id="prev" class="output w3-large w3-bar w3-indigo">&nbsp</div>
 </div>
 
 <div>
@@ -556,7 +556,7 @@ function keyClick(key) {
       output.innerText = out
 
       clear = true
-      preview.innerText = '_'
+      preview.innerHTML = "&nbsp"
       break;
     case 'Ans' :
       output.innerText += numString(ans, length)
@@ -567,7 +567,7 @@ function keyClick(key) {
       } else {
         output.innerText = "0"
         clear = true;
-        preview.innerText = '_'
+        preview.innerHTML = "&nbsp"
       }
       break;
     case '0x':
