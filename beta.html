@@ -606,7 +606,7 @@ function keyClick(key) {
   }
 
   cmd = output.innerText.replace(/_/g, "")
-                        .replace(/^/g, "**")
+                        .replace(/\^/g, "**")
                         .replace(/0b([01\.]*)/g, "parseNum('$1', 2)")
                         .replace(/0x([0-9A-F\.]*)/g, "parseNum('$1', 16)")
                         .replace(/([^0-9A-Fx]|^)√([0-9A-Fx]*)/g, "$1($2**(1/2))")
