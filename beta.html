@@ -375,6 +375,9 @@ function updateKeyMode(mode) {
 }
 // Update the mode
 function updateMode(op) {
+  if (typeof(op) == 'string'){
+    op = document.getElementById(op)
+  }
   console.log("Update mode", op)
   mode = op.id
   clear = true
@@ -436,6 +439,54 @@ function parseNum(str, radix) {
   return dec;
 }
 
+function keyPress(evt) {
+  key = evt.key;
+  key = key.toUpperCase()
+  disp = document.getElementById('disp')
+  char = disp.innerText.slice(-1)
+  switch (key) {
+    case 'X':
+      if (char == '0') {
+        key = '0x'
+        disp.innerText = disp.innerText.slice(0,-1)
+      }
+      break
+    case 'B':
+      if (char == '0') {
+        key = '0b'
+        disp.innerText = disp.innerText.slice(0,-1)
+      }
+      break
+    case 'DELETE':
+    case 'BACKSPACE':
+      evt.preventDefault()
+    case '#':
+      key = 'Del'
+      break
+    case 'ENTER':
+      key = '='
+      break
+    case 'P':
+      updatePadMode(document.getElementById('pad'));
+      break
+    case 'M':
+      switch(mode) {
+        case 'dec': updateMode('hex'); break
+        case 'hex': updateMode('bin'); break
+        case 'bin': updateMode('dec'); break
+      }
+      break
+    default:
+  }
+  btns = document.getElementById("keypad").getElementsByTagName("button")
+  for (i = 0; i < btns.length; i++) {
+    if (btns[i].innerText == key) {
+      btns[i].click()
+      return
+    }
+  }
+  console.log("Unhandled", evt.key)
+}
 // Button click function
 function keyClick(key) {
   decout = document.getElementById('disp')
@@ -536,7 +587,7 @@ for (i=0; i< outputs.length; i++) {
   console.log("set output")
 }
 // Set initial mode
-updateMode(document.getElementById('dec'))
+updateMode('dec')
 
 outputs = document.getElementsByClassName('pad-sel')
 for (i=0; i< outputs.length; i++) {
@@ -546,6 +597,7 @@ binPad = false
 
 // Set height to avoid scroll on android
 document.body.style.height = window.innerHeight + "px"
+document.body.onkeydown = keyPress
 </script>
 
 </body>
