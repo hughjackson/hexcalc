@@ -302,6 +302,9 @@ exponent=false
 // Number to string
 function numString(num, radix) {
   console.log("convert " + num + " to " + radix)
+  sep = '_'
+  dots = /(....)\B/g
+  seplen = 4
   if (radix == 10) {
     if (exponent) {
       exp = 0
@@ -320,7 +323,10 @@ function numString(num, radix) {
         return num.toString() + "e"+exp;
       }
     }
-    return num.toString()
+    //return num.toString()
+    sep = ','
+    dots = /(...)\B/g
+    seplen = 3
   }
   if (num < 0) {
     num = -num;
@@ -332,19 +338,24 @@ function numString(num, radix) {
   // zero pad
   if (radix == 2)
     str = "000" + str
+  else if (radix == 10)
+    str = "  " + str
   else
     str = "   " + str
   int = str.replace(/\..*/,'')
   frac = str.replace(/.*\./,'')
   if (frac == int) frac = ''
   // pad integer digits to multiple of 4
-  int = int.slice(int.length % 4)
+  int = int.slice(int.length % seplen)
+  console.log(int, seplen, int.length, dots)
   // add underscores
-  str = int.replace(/(....)\B/g, "$1_")
+  str = int.replace(dots, `$1${sep}`)
+  console.log(str)
   str = str.replace(/ /g, "")
+  console.log(str)
 
   if (frac.length) {
-    str = str + '.' + frac.replace(/(....)\B/g, "$1_")
+    str = str + '.' + frac.replace(dots, `$1${sep}`)
   }
   if (radix == 2) return sign+'0b'+str
   if (radix == 16) return sign+'0x'+str
@@ -569,7 +580,7 @@ function keyClick(key) {
 
   switch (key.innerText) {
     case '=' : 
-      cmd = output.innerText.replace(/_/g, "")
+      cmd = output.innerText.replace(/_|,/g, "")
                             .replace(/\^/g, "**")
                             .replace(/0b([01\.]*)/g, "parseNum('$1', 2)")
                             .replace(/0x([0-9A-F\.]*)/g, "parseNum('$1', 16)")
@@ -605,7 +616,7 @@ function keyClick(key) {
     default:
   }
 
-  cmd = output.innerText.replace(/_/g, "")
+  cmd = output.innerText.replace(/_|,/g, "")
                         .replace(/\^/g, "**")
                         .replace(/0b([01\.]*)/g, "parseNum('$1', 2)")
                         .replace(/0x([0-9A-F\.]*)/g, "parseNum('$1', 16)")
