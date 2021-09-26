@@ -396,7 +396,7 @@ function updateMode(op) {
     decout = document.getElementById('disp')
     decout.innerText = numString(ans, mode == 'dec' ? 10 : mode == 'hex' ? 16 : 2)
   }
-  
+
   updateKeyMode('dec')
 
 }
@@ -551,9 +551,9 @@ function keyClick(key) {
                             .replace(/([0-9A-Fx]*)√([0-9A-Fx]*)/g, "($2**(1/$1))")
       console.log(cmd,output.innerText)
       ans = eval(cmd)
-      ans = numString(ans, mode == 'dec' ? 10 : mode == 'hex' ? 16 : 2)
-      hist.innerText = output.innerText + '=' + ans
-      output.innerText = ans
+      out = numString(ans, mode == 'dec' ? 10 : mode == 'hex' ? 16 : 2)
+      hist.innerText = output.innerText + '=' + out
+      output.innerText = out
 
       clear = true
       preview.innerText = '_'
@@ -584,9 +584,8 @@ function keyClick(key) {
                         .replace(/0x([0-9A-F\.]*)/g, "parseNum('$1', 16)")
                         .replace(/([^0-9A-Fx]|^)√([0-9A-Fx]*)/g, "$1($2**(1/2))")
                         .replace(/([0-9A-Fx]*)√([0-9A-Fx]*)/g, "($2**(1/$1))")
-  ans = eval(cmd)
-
-  if (!clear) preview.innerText = numString(ans, mode == 'dec' ? 10 : mode == 'hex' ? 16 : 2)
+  val = eval(cmd)
+  if (!clear) preview.innerText = numString(val, mode == 'dec' ? 10 : mode == 'hex' ? 16 : 2)
 
 }
 
