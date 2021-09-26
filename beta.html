@@ -183,7 +183,7 @@ body {counter-reset: section 32}
       <button class="w3-button pukey">&Sqrt;</button>
     </div>
     <div class="w3-col s3">
-      <button class="w3-button opkey">**</button>
+      <button class="w3-button opkey">^</button>
     </div>
   </div>
 
@@ -570,6 +570,7 @@ function keyClick(key) {
   switch (key.innerText) {
     case '=' : 
       cmd = output.innerText.replace(/_/g, "")
+                            .replace(/\^/g, "**")
                             .replace(/0b([01\.]*)/g, "parseNum('$1', 2)")
                             .replace(/0x([0-9A-F\.]*)/g, "parseNum('$1', 16)")
                             .replace(/([^0-9A-Fx]|^)√([0-9A-Fx]*)/g, "$1($2**(1/2))")
@@ -605,6 +606,7 @@ function keyClick(key) {
   }
 
   cmd = output.innerText.replace(/_/g, "")
+                        .replace(/^/g, "**")
                         .replace(/0b([01\.]*)/g, "parseNum('$1', 2)")
                         .replace(/0x([0-9A-F\.]*)/g, "parseNum('$1', 16)")
                         .replace(/([^0-9A-Fx]|^)√([0-9A-Fx]*)/g, "$1($2**(1/2))")
