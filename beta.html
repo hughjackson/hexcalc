@@ -198,7 +198,7 @@ body {counter-reset: section 32}
       <button class="w3-button opkey"></button>
     </div>
     <div class="w3-col s3">
-      <button class="w3-button opkey"></button>
+      <button class="w3-button spkey exp-sel">EXP</button>
     </div>
   </div>
 
@@ -207,7 +207,7 @@ body {counter-reset: section 32}
       <button class="w3-button numkey hexkey">D</button>
     </div>
     <div class="w3-col s3">
-      <button class="w3-button numkey hexkey">E</button>
+      <button class="w3-button numkey hexkey deckey">E</button>
     </div>
     <div class="w3-col s3">
       <button class="w3-button numkey hexkey">F</button>
@@ -297,13 +297,30 @@ body {counter-reset: section 32}
 ans=0
 clear=true
 mode='dec'
+exponent=false
 
 // Number to string
 function numString(num, radix) {
   console.log("convert " + num + " to " + radix)
   if (radix == 10) {
-    if (num > (2**31-1)) num = num-2**32
-    return num.toString(radix)
+    if (exponent) {
+      exp = 0
+      if (num > 1) {
+        while (num >= 1000) {
+          num /= 1000
+          exp += 3
+        }
+      } else if (num > 0) {
+        while (num < 1) {
+          num *= 1000
+          exp -= 3
+        }
+      }
+      if (exp != 0) {
+        return num.toString() + "e"+exp;
+      }
+    }
+    return num.toString()
   }
   if (num < 0) {
     num = -num;
@@ -430,8 +447,16 @@ function updatePadMode(op) {
     document.getElementById("binpad").style.display = "none"
     op.innerText = 'Bin Pad'
   }
+}
 
-
+function updateExpMode(key) {
+    exponent = !exponent;
+    if (exponent) {
+      key.style = 'color:darkturquoise!important';
+    } else {
+      key.style = '';
+    }
+    return
 }
 
 function parseNum(str, radix) {
@@ -611,6 +636,11 @@ for (i=0; i< outputs.length; i++) {
   outputs[i].onclick = function() { updatePadMode(this); };
 }
 binPad = false
+outputs = document.getElementsByClassName('exp-sel')
+for (i=0; i< outputs.length; i++) {
+  outputs[i].onclick = function() { updateExpMode(this); };
+}
+
 
 // Set height to avoid scroll on android
 document.body.style.height = window.innerHeight + "px"
