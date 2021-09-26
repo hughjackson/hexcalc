@@ -18,6 +18,7 @@ body {display:flex; flex-flow:column; height:100vh; max-width:600px; margin:auto
 #keypad {display:flex}
 #binpad {display:none}
 .output {padding:8px;}
+#preview {text-align:right;}
 .w3-row {flex: 1 1 auto; display:flex; flex-flow:row}
 .w3-col {display:flex; flex-flow:column}
 .w3-button {flex: 1 1 auto}
@@ -34,7 +35,9 @@ body {counter-reset: section 32}
 <body>
 
 <div id="display">
+  <div id="hist" class="output w3-large w3-bar w3-indigo">-</div>
   <div id="disp" class="output w3-xxlarge w3-bar w3-indigo">0</div>
+  <div id="prev" class="output w3-large w3-bar w3-indigo">0</div>
 </div>
 
 <div>
@@ -380,7 +383,6 @@ function updateMode(op) {
   }
   console.log("Update mode", op)
   mode = op.id
-  clear = true
 
   btns = document.getElementsByClassName('mode-sel')
   for (i = 0; i < btns.length; i++) {
@@ -388,9 +390,13 @@ function updateMode(op) {
   }
   op.style.backgroundColor = '#ccc'
 
-  decout = document.getElementById('disp')
-  decout.innerText = numString(ans, mode == 'dec' ? 10 : mode == 'hex' ? 16 : 2)
-
+  if (!clear) {
+    keyPress({key:'='})
+  } else {
+    decout = document.getElementById('disp')
+    decout.innerText = numString(ans, mode == 'dec' ? 10 : mode == 'hex' ? 16 : 2)
+  }
+  
   updateKeyMode('dec')
 
 }
@@ -468,14 +474,14 @@ function keyPress(evt) {
       break
     case 'P':
       updatePadMode(document.getElementById('pad'));
-      break
+      return
     case 'M':
       switch(mode) {
         case 'dec': updateMode('hex'); break
         case 'hex': updateMode('bin'); break
         case 'bin': updateMode('dec'); break
       }
-      break
+      return
     default:
   }
   btns = document.getElementById("keypad").getElementsByTagName("button")
@@ -490,6 +496,8 @@ function keyPress(evt) {
 // Button click function
 function keyClick(key) {
   decout = document.getElementById('disp')
+  preview = document.getElementById('prev')
+  hist = document.getElementById('hist')
 
   if (binPad) {
     key.innerText ^= 1
@@ -543,13 +551,12 @@ function keyClick(key) {
                             .replace(/([0-9A-Fx]*)√([0-9A-Fx]*)/g, "($2**(1/$1))")
       console.log(cmd,output.innerText)
       ans = eval(cmd)
-      //if (mode == 'hex') ans = eval('0x'+ans)
-      //if (mode == 'bin') ans = eval('0b'+ans)
-      //hexout.innerText = numString(ans, 16)
-      decout.innerText = numString(ans, mode == 'dec' ? 10 : mode == 'hex' ? 16 : 2)
-      //binout.innerText = numString(ans, 2)
+      ans = numString(ans, mode == 'dec' ? 10 : mode == 'hex' ? 16 : 2)
+      hist.innerText = output.innerText + '=' + ans
+      output.innerText = ans
 
       clear = true
+      preview.innerText = '_'
       break;
     case 'Ans' :
       output.innerText += numString(ans, length)
@@ -560,6 +567,7 @@ function keyClick(key) {
       } else {
         output.innerText = "0"
         clear = true;
+        preview.innerText = '_'
       }
       break;
     case '0x':
@@ -570,6 +578,16 @@ function keyClick(key) {
       break
     default:
   }
+
+  cmd = output.innerText.replace(/_/g, "")
+                        .replace(/0b([01\.]*)/g, "parseNum('$1', 2)")
+                        .replace(/0x([0-9A-F\.]*)/g, "parseNum('$1', 16)")
+                        .replace(/([^0-9A-Fx]|^)√([0-9A-Fx]*)/g, "$1($2**(1/2))")
+                        .replace(/([0-9A-Fx]*)√([0-9A-Fx]*)/g, "($2**(1/$1))")
+  ans = eval(cmd)
+
+  if (!clear) preview.innerText = numString(ans, mode == 'dec' ? 10 : mode == 'hex' ? 16 : 2)
+
 }
 
 // Find all the button
