@@ -550,14 +550,12 @@ function keyClick(key) {
     // update color row
     updateColorRow()
     return
+  } else if (mode == "bin") {
+    length = 2
   } else if (mode == "hex") {
-    output = decout
     length = 16
-    repl   = "$1"
   } else {
-    output = decout
     length = 10
-    repl   = "$1"
   }
   output = decout
 
