@@ -293,6 +293,7 @@ body {counter-reset: section 32}
   </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/9.5.0/math.js" integrity="sha512-4aKxEISD4pbpzaB58OKEipeE+EyPiuftOmOapUUbPakIRWML5tK0u+FHZ22O/85EEgQjJNUOcldC/PcSDMWALQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
 ans=0
 clear=true
@@ -334,7 +335,14 @@ function numString(num, radix) {
   } else {
     sign = ''
   }
-  str = num.toString(radix).toUpperCase()
+
+  switch (radix) {
+    case 16: str = math.hex(num).slice(2); break;
+    case  2: str = math.bin(num).slice(2); break;
+    default: str = num.toString(radix).toUpperCase(); break;
+  }
+  console.log('debug ',str, ' ', radix)
+
   // zero pad
   if (radix == 2)
     str = "000" + str
@@ -579,14 +587,12 @@ function keyClick(key) {
   switch (key.innerText) {
     case '=' : 
       cmd = output.innerText.replace(/_|,/g, "")
-                            .replace(/\^/g, "**")
-                            .replace(/0b([01\.]*)/g, "parseNum('$1', 2)")
-                            .replace(/0x([0-9A-F\.]*)/g, "parseNum('$1', 16)")
-                            .replace(/([^0-9A-Fx]|^)√([0-9A-Fx]*)/g, "$1($2**(1/2))")
-                            .replace(/([0-9A-Fx]*)√([0-9A-Fx]*)/g, "($2**(1/$1))")
+                            .replace(/([^0-9A-Fx]|^)√([0-9A-Fx]*)/g, "$1($2^(1/2))")
+                            .replace(/([0-9A-Fx]*)√([0-9A-Fx]*)/g, "($2^(1/$1))")
       console.log(cmd,output.innerText)
-      ans = eval(cmd)
-      out = numString(ans, mode == 'dec' ? 10 : mode == 'hex' ? 16 : 2)
+      ans = math.evaluate(cmd)
+      ans = math.format(ans, {precision: 14})
+      out = numString(ans, length)
       hist.innerText = output.innerText + '=' + out
       output.innerText = out
 
@@ -615,13 +621,11 @@ function keyClick(key) {
   }
 
   cmd = output.innerText.replace(/_|,/g, "")
-                        .replace(/\^/g, "**")
-                        .replace(/0b([01\.]*)/g, "parseNum('$1', 2)")
-                        .replace(/0x([0-9A-F\.]*)/g, "parseNum('$1', 16)")
-                        .replace(/([^0-9A-Fx]|^)√([0-9A-Fx]*)/g, "$1($2**(1/2))")
-                        .replace(/([0-9A-Fx]*)√([0-9A-Fx]*)/g, "($2**(1/$1))")
-  val = eval(cmd)
-  if (!clear) preview.innerText = numString(val, mode == 'dec' ? 10 : mode == 'hex' ? 16 : 2)
+                        .replace(/([^0-9A-Fx]|^)√([0-9A-Fx]*)/g, "$1($2^(1/2))")
+                        .replace(/([0-9A-Fx]*)√([0-9A-Fx]*)/g, "($2^(1/$1))")
+  val = math.evaluate(cmd)
+  val = math.format(val, {precision: 14})
+  if (!clear) preview.innerText = numString(val, length)
 
 }
 
