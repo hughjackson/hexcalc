@@ -10,10 +10,14 @@
 .w3-button, #keypad {width:100%}
 .w3-fifth {width:19.9999%}
 .w3-eighth {width:12.4999%}
+.w3-select {background: none; color: white; border: none}
 .numkey, .numkey:hover{background-color:#607d8b!important; color: white!important}
 .opkey, .opkey:hover, .spkey, .spkey:hover, .pukey, .pukey:hover {background-color:#616161!important; color: white!important}
 body {display:flex; flex-flow:column; height:100vh; max-width:600px; margin:auto}
-#display {flex: 0 1 auto}
+#display {flex: 0 1 auto; display: flex}
+#disp-btns {display:flex; flex-direction: column}
+#disp-btns>* {flex-grow:1}
+#disp-input {flex-grow:1}
 #keypad, #binpad {flex: 1 0 auto; font-size: 24px!important; flex-flow:column}
 #keypad {display:flex}
 #binpad {display:none}
@@ -31,26 +35,38 @@ body {counter-reset: section 32}
 }
 #color-row {color:white}
 #color-row div {padding:8px; text-align: center}
+/* Note this removes accesibility: */
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}
 </style>
 <body>
 
-<div id="display">
-  <div id="hist" class="output w3-large w3-bar w3-indigo">&nbsp</div>
-  <div id="disp" class="output w3-xxlarge w3-bar w3-indigo">0</div>
-  <div id="prev" class="output w3-large w3-bar w3-indigo">&nbsp</div>
+
+<div id="display" class="w3-indigo">
+  <div id='disp-btns'>
+    <select id='mode-select' class="w3-select" onchange="updateMode(this.value)">
+      <option value='dec' class="w3-indigo">DEC</option>
+      <option value='hex' class="w3-indigo">HEX</option>
+      <option value='bin' class="w3-indigo">BIN</option>
+    </select>
+    <select class="w3-select">
+      <option class="w3-indigo">NORM</option>
+      <option class="w3-indigo">EXP</option>
+      <option class="w3-indigo">ENG</option>
+    </select>  </div>
+  <div id="disp-input">
+    <div id="hist" class="output w3-large w3-bar w3-indigo">&nbsp</div>
+    <div id="disp" class="output w3-xxlarge w3-bar w3-indigo">0</div>
+    <div id="prev" class="output w3-large w3-bar w3-indigo">&nbsp</div>
+  </div>
 </div>
 
 <div>
   <div class="w3-row">
-    <div class="w3-col s3">
-      <button id='dec' class="w3-button mode-sel">Dec</button>
-    </div>
-    <div class="w3-col s3">
-      <button id='hex' class="w3-button mode-sel">Hex</button>
-    </div>
-    <div class="w3-col s3">
-      <button id='bin' class="w3-button mode-sel">Bin</button>
-    </div>
     <div class="w3-col s3">
       <button id='pad' class="w3-button pad-sel">Bin Pad</button>
     </div>
@@ -415,16 +431,11 @@ function updateKeyMode(mode) {
 // Update the mode
 function updateMode(op) {
   if (typeof(op) == 'string'){
-    op = document.getElementById(op)
+    mode = op
+  } else {
+    mode = op.id
   }
-  console.log("Update mode", op)
-  mode = op.id
-
-  btns = document.getElementsByClassName('mode-sel')
-  for (i = 0; i < btns.length; i++) {
-    btns[i].style.backgroundColor = 'white'
-  }
-  op.style.backgroundColor = '#ccc'
+  document.getElementById('mode-select').value = mode
 
   if (!clear) {
     keyPress({key:'='})
