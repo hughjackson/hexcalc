@@ -27,6 +27,18 @@ body {display:flex; flex-flow:column; height:100vh; max-width:600px; margin:auto
 .w3-col {display:flex; flex-flow:column}
 .w3-button {flex: 1 1 auto}
 body {counter-reset: section 64}
+#history{
+  display:none;
+  flex-direction: column;
+  height:100%;
+  overflow-y:auto;
+  background-color:#607d8b!important; 
+  color: white!important
+}
+#history .w3-btn {
+  text-align: right;
+  min-height: 50px;
+}
 #binpad .numkey::before {
     counter-increment: section -1;
     content: counter(section);
@@ -77,7 +89,13 @@ button:focus {
 <div>
   <div class="w3-row">
     <div class="w3-col s3">
-      <button id='pad' class="w3-button pad-sel">Bin Pad</button>
+      <button id='pad-num' class="w3-button pad-sel">Num Pad</button>
+    </div>
+    <div class="w3-col s3">
+      <button id='pad-bin' class="w3-button pad-sel">Bin Pad</button>
+    </div>
+    <div class="w3-col s3">
+      <button id='show-hist' class="w3-button pad-sel">History</button>
     </div>
   </div>
 </div>
@@ -422,6 +440,9 @@ button:focus {
   </div>
 </div>
 
+<div id='history'>
+</div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/9.5.0/math.js" integrity="sha512-4aKxEISD4pbpzaB58OKEipeE+EyPiuftOmOapUUbPakIRWML5tK0u+FHZ22O/85EEgQjJNUOcldC/PcSDMWALQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
 ans=0
@@ -558,18 +579,22 @@ function updateMode(op) {
 // Update the mode
 function updatePadMode(op) {
 
-  binPad = !binPad
+  binPad = op.id == 'pad-bin'
+  showhist = op.id == 'show-hist'
+  console.log(op.id, binPad, history)
 
   if (binPad && ans < 0) {
     ans += 2**32
   }
   binVal = numString(ans, 2)
 
+  document.getElementById("keypad").style.display = "none"
+  document.getElementById("binpad").style.display = "none"
+  document.getElementById("history").style.display = "none"
+
   if (binPad) {
-    document.getElementById("keypad").style.display = "none"
     document.getElementById("binpad").style.display = "flex"
     
-
     // update button values
     ext = ("0".repeat(64) + binVal.replace(/_/g,"").replace(/0b/g,"")).slice(-64)
     btns = document.getElementById("binpad").getElementsByClassName("numkey")
@@ -578,12 +603,13 @@ function updatePadMode(op) {
     }
 
     // update color row
-    updateColorRow()
-    op.innerText = 'Num Pad'
+    //updateColorRow()
+  } else if (showhist) {
+    el = document.getElementById('history')
+    el.style.display = "flex"
+    el.scroll(0,9999)
   } else {
     document.getElementById("keypad").style.display = "flex"
-    document.getElementById("binpad").style.display = "none"
-    op.innerText = 'Bin Pad'
   }
 }
 
@@ -747,8 +773,19 @@ function keyClick(key) {
       ans = evaluate(output.innerText)
       ans = math.format(ans, {precision: 14})
       out = numString(ans, length)
+      
       hist.innerText = output.innerText + '=' + out
       output.innerText = out
+      
+      if (hist.innerText.length) {
+        hbtn = document.createElement('button')
+        hbtn.className='w3-btn'
+        hbtn.innerText = hist.innerText
+        hbtn.onclick = function(){restoreHistory(this)}
+        el = document.getElementById('history')
+        el.append(hbtn)
+        el.scroll(0,9999)
+      }
 
       clear = true
       preview.innerHTML = "&nbsp"
@@ -792,6 +829,13 @@ function keyClick(key) {
     }
     preview.innerText = val
   }
+}
+
+function restoreHistory(button) { 
+  console.log(button.innerText)
+  output = document.getElementById('disp')
+  output.innerText = button.innerText.replace(/=.*/,'')
+  keyPress({key:'='})
 }
 
 // Find all the button
