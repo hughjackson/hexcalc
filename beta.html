@@ -779,8 +779,8 @@ function keyClick(key) {
   val = evaluate(output.innerText)
   val = math.format(val, {precision: 14})
   if (!clear) {
+    val = numString(val, length)
     if (notation == 'engineering') {
-      val = numString(val, length)
       console.log("eng", val)
       val =val.replace(/e\+3$/,"e+3 (k)")
               .replace(/e\+6$/,"e+6 (M)")
