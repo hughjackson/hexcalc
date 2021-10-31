@@ -53,10 +53,10 @@ button:focus {
       <option value='hex' class="w3-indigo">HEX</option>
       <option value='bin' class="w3-indigo">BIN</option>
     </select>
-    <select class="w3-select">
-      <option class="w3-indigo">NORM</option>
-      <option class="w3-indigo">EXP</option>
-      <option class="w3-indigo">ENG</option>
+    <select id='notation' class="w3-select" onchange="updateNotation(this.value)"">
+      <option value="fixed" class="w3-indigo">NORM</option>
+      <option value="exponential" class="w3-indigo">EXP</option>
+      <option value="engineering" class="w3-indigo">ENG</option>
     </select>  </div>
   <div id="disp-input">
     <div id="hist" class="output w3-large w3-bar w3-indigo">&nbsp</div>
@@ -315,6 +315,7 @@ ans=0
 clear=true
 mode='dec'
 exponent=false
+console.log(math.format(555, {"notation":'exponential'}))
 
 // Number to string
 function numString(num, radix) {
@@ -322,68 +323,38 @@ function numString(num, radix) {
   sep = '_'
   dots = /(....)\B/g
   seplen = 4
+
   if (radix == 10) {
-    if (exponent) {
-      exp = 0
-      if (num > 1) {
-        while (num >= 1000) {
-          num /= 1000
-          exp += 3
-        }
-      } else if (num > 0) {
-        while (num < 1) {
-          num *= 1000
-          exp -= 3
-        }
-      }
-      if (exp != 0) {
-        return num.toString() + "e"+exp;
-      }
+    num = math.format(math.evaluate(num), {notation:notation})
+    int = num.replace(/\..*/,'')
+    frac = num.replace(/\d*\./,'')
+    exp = num.replace(/.*[eE]/,'')
+    console.log(num,int,frac,exp)
+
+    s = int.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+    if (num != int) {
+      s += '.' + frac
+      //s += '.' + frac.replace(/\B(?<=^(\d{3})+)/g, ",")
     }
-    //return num.toString()
-    sep = ','
-    dots = /(...)\B/g
-    seplen = 3
-  }
-  if (num < 0) {
-    num = -num;
-    sign = '-'
+    return s
   } else {
-    sign = ''
-  }
+    num = math.format(math.evaluate(num), {notation:mode})
+    prefix = num.slice(0,2)
+    num = num.slice(2).toUpperCase()
+    int = num.replace(/\..*/,'')
+    frac = num.replace(/.*\./,'')
+    isfrac = int != num
+    
+    for(pad = 0; pad < int.length % 4; ++pad) int = '0'+int
+    s = prefix + int.replace(/(?!<=^)([A-F0-9])(?=([A-F0-9]{4})+(?![A-F0-9]))/g, "$1_")
+    if (isfrac) {
+      s += '.' + frac
+      //s += '.' + frac.replace(/\B(?<=^([A-F0-9]{4})+)/g, "_")
+    }
+    return s
 
-  switch (radix) {
-    case 16: str = math.hex(num).slice(2); break;
-    case  2: str = math.bin(num).slice(2); break;
-    default: str = num.toString(radix).toUpperCase(); break;
+    return math.format(math.evaluate(num), {notation:mode}).replace(/(?!<=[bx])([A-F0-9])(?=([A-F0-9]{4})+(?![A-F0-9]))/g, "$1_")
   }
-  console.log('debug ',str, ' ', radix)
-
-  // zero pad
-  if (radix == 2)
-    str = "000" + str
-  else if (radix == 10)
-    str = "  " + str
-  else
-    str = "   " + str
-  int = str.replace(/\..*/,'')
-  frac = str.replace(/.*\./,'')
-  if (frac == int) frac = ''
-  // pad integer digits to multiple of 4
-  int = int.slice(int.length % seplen)
-  console.log(int, seplen, int.length, dots)
-  // add underscores
-  str = int.replace(dots, `$1${sep}`)
-  console.log(str)
-  str = str.replace(/ /g, "")
-  console.log(str)
-
-  if (frac.length) {
-    str = str + '.' + frac.replace(dots, `$1${sep}`)
-  }
-  if (radix == 2) return sign+'0b'+str
-  if (radix == 16) return sign+'0x'+str
-  return sign+str
 }
 
 function contrast(r,g,b) {
@@ -488,6 +459,10 @@ function updateExpMode(key) {
     }
     return
 }
+function updateNotation(value) {
+    notation = value;
+    return
+}
 
 function parseNum(str, radix) {
   int = str.replace(/\..*/,'')
@@ -560,9 +535,7 @@ function keyClick(key) {
     for (i = 0; i < btns.length; i++) {
       if (key == btns[i]) {
         ans ^= 2 ** (31 - i)
-        //hexout.innerText = numString(ans, 16)
         decout.innerText = numString(ans, mode == 'dec' ? 10 : mode == 'hex' ? 16 : 2)
-        //binout.innerText = numString(ans, 2)
       }
     }
 
@@ -655,6 +628,7 @@ for (i=0; i< outputs.length; i++) {
   console.log("set output")
 }
 // Set initial mode
+updateNotation('fixed')
 updateMode('dec')
 
 outputs = document.getElementsByClassName('pad-sel')
