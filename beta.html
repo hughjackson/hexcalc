@@ -356,9 +356,9 @@ function numString(num, radix) {
     }
     num = math.format(ans, {notation:mode, wordSize:wordsize})
     num = num.replace(/i.*/,'') // remove wordsize
-    console.log("DEBUG", num)
-    prefix = num.slice(0,2)
-    num = num.slice(2).toUpperCase()
+    prefix = num.replace(/(-?..).*/,"$1")
+    num = num.replace(/(-?..)/,'').toUpperCase()
+    console.log("DEBUG", prefix,num)
     int = num.replace(/\..*/,'')
     frac = num.replace(/.*\./,'')
     isfrac = int != num
@@ -483,7 +483,7 @@ function updateNotation(value) {
 }
 function updateWordsize(value) {
     wordsize = parseInt(value);
-    
+
     if (!clear) {
       keyPress({key:'='})
     } else {
