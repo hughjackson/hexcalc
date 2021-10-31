@@ -440,14 +440,20 @@ function numString(num, radix) {
     num = math.format(math.evaluate(num), {notation:notation})
     int = num.replace(/\..*/,'')
     frac = num.replace(/\d*\./,'')
-    exp = num.replace(/.*[eE]/,'')
-    console.log(num,int,frac,exp)
 
     s = int.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
     if (num != int) {
       s += '.' + frac
       //s += '.' + frac.replace(/\B(?<=^(\d{3})+)/g, ",")
     }
+    /*if (notation == 'engineering') {
+      s = s.replace(/e\+3$/,"k")
+           .replace(/e\+6$/,"M")
+           .replace(/e\+9$/,"G")
+           .replace(/e\-3$/,"m")
+           .replace(/e\-6$/,"u")
+           .replace(/e\-9$/,"n")
+    }*/
     return s
   } else {
     ans = math.evaluate(num)
@@ -672,6 +678,20 @@ function keyPress(evt) {
   }
   console.log("Unhandled", evt.key)
 }
+
+function evaluate(cmd) {
+  cmd =  cmd.replace(/_|,/g, "")
+            .replace(/([^0-9A-Fx]|^)√([0-9A-Fx]*)/g, "$1($2^(1/2))")
+            .replace(/([0-9A-Fx]*)√([0-9A-Fx]*)/g, "($2^(1/$1))")
+            //.replace(/k\b/,'e+3')
+            //.replace(/M\b/,'e+6')
+            //.replace(/G\b/,'e+9')
+            //.replace(/m\b/,'e-3')
+            //.replace(/u\b/,'e-6')
+            //.replace(/n\b/,'e-9')
+  return math.evaluate(cmd)
+}
+
 // Button click function
 function keyClick(key) {
   decout = document.getElementById('disp')
@@ -724,11 +744,7 @@ function keyClick(key) {
 
   switch (key.innerText) {
     case '=' : 
-      cmd = output.innerText.replace(/_|,/g, "")
-                            .replace(/([^0-9A-Fx]|^)√([0-9A-Fx]*)/g, "$1($2^(1/2))")
-                            .replace(/([0-9A-Fx]*)√([0-9A-Fx]*)/g, "($2^(1/$1))")
-      console.log(cmd,output.innerText)
-      ans = math.evaluate(cmd)
+      ans = evaluate(output.innerText)
       ans = math.format(ans, {precision: 14})
       out = numString(ans, length)
       hist.innerText = output.innerText + '=' + out
@@ -760,13 +776,22 @@ function keyClick(key) {
     default:
   }
 
-  cmd = output.innerText.replace(/_|,/g, "")
-                        .replace(/([^0-9A-Fx]|^)√([0-9A-Fx]*)/g, "$1($2^(1/2))")
-                        .replace(/([0-9A-Fx]*)√([0-9A-Fx]*)/g, "($2^(1/$1))")
-  val = math.evaluate(cmd)
+  val = evaluate(output.innerText)
   val = math.format(val, {precision: 14})
-  if (!clear) preview.innerText = numString(val, length)
-
+  if (!clear) {
+    if (notation == 'engineering') {
+      val = numString(val, length)
+      console.log("eng", val)
+      val =val.replace(/e\+3$/,"e+3 (k)")
+              .replace(/e\+6$/,"e+6 (M)")
+              .replace(/e\+9$/,"e+9 (G)")
+              .replace(/e\-3$/,"e-3 (m)")
+              .replace(/e\-6$/,"e-6 (u)")
+              .replace(/e\-9$/,"e-9 (n)")
+              .replace(/e\+0$/, "")
+    }
+    preview.innerText = val
+  }
 }
 
 // Find all the button
