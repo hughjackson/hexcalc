@@ -57,7 +57,15 @@ button:focus {
       <option value="fixed" class="w3-indigo">NORM</option>
       <option value="exponential" class="w3-indigo">EXP</option>
       <option value="engineering" class="w3-indigo">ENG</option>
-    </select>  </div>
+    </select>
+    <select id='wordsize' class="w3-select"  onchange="updateWordsize(this.value)"">
+      <option value="0" class="w3-indigo">FREE</option>
+      <option value="8" class="w3-indigo">INT8</option>
+      <option value="16" class="w3-indigo">INT16</option>
+      <option value="32" class="w3-indigo">INT32</option>
+      <option value="64" class="w3-indigo">INT64</option>
+    </select>
+  </div>
   <div id="disp-input">
     <div id="hist" class="output w3-large w3-bar w3-indigo">&nbsp</div>
     <div id="disp" class="output w3-xxlarge w3-bar w3-indigo">0</div>
@@ -338,14 +346,24 @@ function numString(num, radix) {
     }
     return s
   } else {
-    num = math.format(math.evaluate(num), {notation:mode})
+    ans = math.evaluate(num)
+    if (wordsize) {
+      console.log("1", ans)
+      while (ans >= 2**wordsize) ans -= 2**wordsize
+      console.log("2", ans)
+      while (ans <  -(2**wordsize)) ans += 2**wordsize
+      console.log("3", ans)
+    }
+    num = math.format(ans, {notation:mode, wordSize:wordsize})
+    num = num.replace(/i.*/,'') // remove wordsize
+    console.log("DEBUG", num)
     prefix = num.slice(0,2)
     num = num.slice(2).toUpperCase()
     int = num.replace(/\..*/,'')
     frac = num.replace(/.*\./,'')
     isfrac = int != num
     
-    for(pad = 0; pad < int.length % 4; ++pad) int = '0'+int
+    for(pad = 0; pad < int.length % (wordsize == 8 ? 2 : 4); ++pad) int = '0'+int
     s = prefix + int.replace(/(?!<=^)([A-F0-9])(?=([A-F0-9]{4})+(?![A-F0-9]))/g, "$1_")
     if (isfrac) {
       s += '.' + frac
@@ -461,6 +479,18 @@ function updateExpMode(key) {
 }
 function updateNotation(value) {
     notation = value;
+    return
+}
+function updateWordsize(value) {
+    wordsize = parseInt(value);
+    
+    if (!clear) {
+      keyPress({key:'='})
+    } else {
+      decout = document.getElementById('disp')
+      decout.innerText = numString(ans, mode == 'dec' ? 10 : mode == 'hex' ? 16 : 2)
+    }
+
     return
 }
 
@@ -630,6 +660,7 @@ for (i=0; i< outputs.length; i++) {
 // Set initial mode
 updateNotation('fixed')
 updateMode('dec')
+updateWordsize('0')
 
 outputs = document.getElementsByClassName('pad-sel')
 for (i=0; i< outputs.length; i++) {
