@@ -460,7 +460,7 @@ function numString(num, radix) {
   if (radix == 10) {
     num = math.format(math.evaluate(num), {notation:notation})
     int = num.replace(/\..*/,'')
-    frac = num.replace(/\d*\./,'')
+    frac = num.replace(/\-?\d*\./,'')
 
     s = int.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
     if (num != int) {
