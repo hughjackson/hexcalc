@@ -42,6 +42,7 @@ textarea:focus,
 button:focus {
     outline: none;
 }
+.hide {display:none};
 </style>
 <body>
 
@@ -363,7 +364,8 @@ function numString(num, radix) {
     frac = num.replace(/.*\./,'')
     isfrac = int != num
     
-    for(pad = 0; pad < int.length % (wordsize == 8 ? 2 : 4); ++pad) int = '0'+int
+    padding = mode == "hex" && wordsize == 8 ? 2 : 4
+    for(pad = 0; pad < int.length % padding; ++pad) int = '0'+int
     s = prefix + int.replace(/(?!<=^)([A-F0-9])(?=([A-F0-9]{4})+(?![A-F0-9]))/g, "$1_")
     if (isfrac) {
       s += '.' + frac
@@ -434,6 +436,16 @@ function updateMode(op) {
   }
 
   updateKeyMode('dec')
+
+  not = document.getElementById('notation').classList
+  wsz = document.getElementById('wordsize').classList
+  if (mode == 'dec') {
+    not.remove('hide')
+    wsz.add('hide')
+  } else {
+    not.add('hide')
+    wsz.remove('hide')
+  }
 
 }
 // Update the mode
