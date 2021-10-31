@@ -327,7 +327,7 @@ button:focus {
       <button class="w3-button opkey"></button>
     </div>
     <div class="w3-col s3">
-      <button class="w3-button spkey exp-sel">EXP</button>
+      <button class="w3-button spkey">EXP</button>
     </div>
   </div>
 
@@ -336,7 +336,7 @@ button:focus {
       <button class="w3-button numkey hexkey">D</button>
     </div>
     <div class="w3-col s3">
-      <button class="w3-button numkey hexkey deckey">E</button>
+      <button class="w3-button numkey hexkey">E</button>
     </div>
     <div class="w3-col s3">
       <button class="w3-button numkey hexkey">F</button>
@@ -427,7 +427,6 @@ button:focus {
 ans=0
 clear=true
 mode='dec'
-exponent=false
 console.log(math.format(555, {"notation":'exponential'}))
 
 // Number to string
@@ -582,15 +581,6 @@ function updatePadMode(op) {
   }
 }
 
-function updateExpMode(key) {
-    exponent = !exponent;
-    if (exponent) {
-      key.style = 'color:darkturquoise!important';
-    } else {
-      key.style = '';
-    }
-    return
-}
 function updateNotation(value) {
     notation = value;
     return
@@ -669,6 +659,10 @@ function keyPress(evt) {
       return
     default:
   }
+
+  // in hex E = E, but otherwise it is EXP
+  if (mode != "hex" && key == "E") key = "EXP";
+
   btns = document.getElementById("keypad").getElementsByTagName("button")
   for (i = 0; i < btns.length; i++) {
     if (btns[i].innerText == key) {
@@ -761,6 +755,8 @@ function keyClick(key) {
     case '0b':
       updateKeyMode('bin')
       break
+    case 'EXP':
+      output.innerText += 'e'
     default:
   }
 
