@@ -11,8 +11,6 @@
 .w3-fifth {width:19.9999%}
 .w3-eighth {width:12.4999%}
 .w3-select {background: none; color: white; border: none}
-.numkey, .numkey:hover{background-color:#607d8b!important; color: white!important}
-.opkey, .opkey:hover, .spkey, .spkey:hover, .pukey, .pukey:hover {background-color:#616161!important; color: white!important}
 body {display:flex; flex-flow:column; height:100vh; max-width:600px; margin:auto}
 #display {flex: 0 1 auto; display: flex}
 #disp-btns {display:flex; flex-direction: column}
@@ -25,15 +23,37 @@ body {display:flex; flex-flow:column; height:100vh; max-width:600px; margin:auto
 #preview {text-align:right;}
 .w3-row {flex: 1 1 auto; display:flex; flex-flow:row}
 .w3-col {display:flex; flex-flow:column}
-.w3-button {flex: 1 1 auto}
+.w3-button {
+  flex: 1 1 auto;
+  border-radius: 50%;
+  max-width: 75px;
+  max-height: 75px;
+  margin: auto;
+  color: white;
+}
+.w3-button:hover {
+  color: white!important;
+}
+.w3-button.accent {
+  background: #3f51b5;
+  color: white!important;
+}
+.w3-button.spkey, .w3-button.opkey {
+    color: #261da2;
+}
+#keypad, #binpad, #history, #mode-row {
+  background: #777;
+  color: white
+}
+#mode-row {
+  border-radius: 20px 20px 0 0;
+}
 body {counter-reset: section 64}
 #history{
   display:none;
   flex-direction: column;
   height:100%;
   overflow-y:auto;
-  background-color:#607d8b!important; 
-  color: white!important
 }
 #history .w3-btn {
   text-align: right;
@@ -60,10 +80,10 @@ button:focus {
 }
 .hide {display:none};
 </style>
-<body>
+<body class="w3-indigo">
 
 
-<div id="display" class="w3-indigo">
+<div id="display">
   <div id='disp-btns'>
     <select id='mode-select' class="w3-select" onchange="updateMode(this.value)">
       <option value='dec' class="w3-indigo">DEC</option>
@@ -90,16 +110,16 @@ button:focus {
   </div>
 </div>
 
-<div>
+<div id='mode-row'>
   <div class="w3-row">
-    <div class="w3-col s3">
-      <button id='pad-num' class="w3-button pad-sel">Num Pad</button>
+    <div class="w3-col s4">
+      <button id='pad-num' class="w3-btn pad-sel">Num Pad</button>
     </div>
-    <div class="w3-col s3">
-      <button id='pad-bin' class="w3-button pad-sel">Bin Pad</button>
+    <div class="w3-col s4">
+      <button id='pad-bin' class="w3-btn pad-sel">Bin Pad</button>
     </div>
-    <div class="w3-col s3">
-      <button id='show-hist' class="w3-button pad-sel">History</button>
+    <div class="w3-col s4">
+      <button id='show-hist' class="w3-btn pad-sel">History</button>
     </div>
   </div>
 </div>
@@ -439,7 +459,7 @@ button:focus {
       <button class="w3-button numkey hexkey deckey binkey">.</button>
     </div>
     <div class="w3-col s3">
-      <button class="w3-button spkey">=</button>
+      <button class="w3-button spkey accent">=</button>
     </div>
   </div>
 </div>
