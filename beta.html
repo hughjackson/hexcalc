@@ -61,9 +61,9 @@ button {-webkit-tap-highlight-color: transparent;}
   margin: 20px;
   border-radius: 38px;
 }
-#keypad>.w3-col.s3{
+#keypad>.w3-col.shaded{
   background: rgba(0,0,0,0.2);
-  width: 70px;
+  width: 140px;
 }
 #keypad, #binpad, #history, #mode-row {
   background: #777;
@@ -367,18 +367,7 @@ button:focus {
 </div>
 
 <div id="keypad" class="w3-row">
-  <div class="w3-col s9">
-    <div class="w3-row">
-      <div class="w3-col s4">
-        <button class="w3-button pukey">(</button>
-      </div>
-      <div class="w3-col s4">
-        <button class="w3-button pukey">)</button>
-      </div>
-      <div class="w3-col s4">
-        <button class="w3-button pukey">&Sqrt;</button>
-      </div>
-    </div>
+  <div class="w3-col s7">
 
     <div class="w3-row">
       <div class="w3-col s4">
@@ -388,7 +377,7 @@ button:focus {
         <button class="w3-button pukey">0b</button>
       </div>
       <div class="w3-col s4">
-        <button class="w3-button opkey"></button>
+        <button class="w3-button opkey">%</button>
       </div>
     </div>
 
@@ -464,8 +453,39 @@ button:focus {
       </div>
     </div>
   </div>
-  <div class="w3-col s3">
+  <div class="w3-col s5 shaded">
+
     <div class="w3-row">
+      <div class="w3-col s12">
+        <button class="w3-button opkey">log</button>
+      </div>
+      <div class="w3-col s12">
+        <button class="w3-button opkey">ln</button>
+      </div>
+    </div>
+
+    <div class="w3-row">
+      <div class="w3-col s12">
+        <button class="w3-button opkey">e</button>
+      </div>
+      <div class="w3-col s12">
+        <button class="w3-button opkey">pi</button>
+      </div>
+    </div>
+
+    <div class="w3-row">
+      <div class="w3-col s12">
+        <button class="w3-button opkey">(</button>
+      </div>
+      <div class="w3-col s12">
+        <button class="w3-button opkey">)</button>
+      </div>
+    </div>
+
+    <div class="w3-row">
+      <div class="w3-col s12">
+        <button class="w3-button opkey">&Sqrt;</button>
+      </div>
       <div class="w3-col s12">
         <button class="w3-button opkey">^</button>
       </div>
@@ -473,23 +493,8 @@ button:focus {
 
     <div class="w3-row">
       <div class="w3-col s12">
-        <button class="w3-button spkey">EXP</button>
-      </div>
-    </div>
-
-    <div class="w3-row">
-      <div class="w3-col s12">
-        <button class="w3-button spkey">Del</button>
-      </div>
-    </div>
-
-    <div class="w3-row">
-      <div class="w3-col s12">
         <button class="w3-button opkey">/</button>
       </div>
-    </div>
-
-    <div class="w3-row">
       <div class="w3-col s12">
         <button class="w3-button opkey">*</button>
       </div>
@@ -499,16 +504,17 @@ button:focus {
       <div class="w3-col s12">
         <button class="w3-button opkey">-</button>
       </div>
-    </div>
-
-    <div class="w3-row">
       <div class="w3-col s12">
         <button class="w3-button opkey">+</button>
       </div>
     </div>
 
     <div class="w3-row">
-      <div class="w3-col s12">
+      <div class="w3-col s6">
+        <button class="w3-button spkey">Del</button>
+      </div>
+      <div style='flex-grow:1'></div>
+      <div class="w3-col s6">
         <button class="w3-button spkey accent">=</button>
       </div>
     </div>
