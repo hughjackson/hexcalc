@@ -12,24 +12,25 @@
 .w3-eighth {width:12.4999%}
 .w3-select {background: none; color: white; border: none}
 body {display:flex; flex-flow:column; height:100vh; max-width:600px; margin:auto}
-#display {flex: 0 1 auto; display: flex}
+#display {flex: 0 1 auto; display: flex; height:100%}
 #disp-btns {display:flex; flex-direction: column}
 #disp-btns>* {flex-grow:1}
 #disp-input {flex-grow:1}
-#keypad, #binpad {flex: 1 0 auto; font-size: 24px!important; flex-flow:column}
+#keypad, #binpad {flex: 1 0 auto; font-size: 24px!important; justify-content: space-between;}
+#binpad {flex-flow:column}
 #keypad {display:flex}
 #binpad {display:none}
 .output {padding:8px; text-align:right}
 #preview {text-align:right;}
 .w3-row {flex: 1 1 auto; display:flex; flex-flow:row}
-.w3-col {display:flex; flex-flow:column}
+.w3-col {display:flex; flex-flow:column; height:fit-content}
 .w3-button {
   flex: 1 1 auto;
   border-radius: 50%;
-  max-width: 75px;
-  max-height: 75px;
-  margin: auto;
+  width: 75px;
+  height: 75px;
   color: white;
+  margin: auto;
 }
 .w3-button:active {
   color: white!important;
@@ -40,18 +41,29 @@ button.w3-button:hover:not(:active) {
   background: none!important;
 }
 button.w3-button.accent:hover:not(:active) {
-  background:#3f51b5!important;
+  background:#6ad045!important;
   color: none!important;
 }
 button:focus {outline:0;}
 button {-webkit-tap-highlight-color: transparent;}
 
 .w3-button.accent {
-  background: #3f51b5!important;
-  color: none!important;
+  background: #6ad045!important;
+  color: white!important;
 }
-.w3-button.spkey, .w3-button.opkey {
-    color: #261da2;
+.w3-button.spkey, .w3-button.opkey, .w3-button.pukey {
+    color: #6ad045;
+}
+.w3-indigo {
+  background: #6ad045!important;
+}
+#keypad>.w3-col{
+  margin: 20px;
+  border-radius: 38px;
+}
+#keypad>.w3-col.s3{
+  background: rgba(0,0,0,0.2);
+  width: 75px;
 }
 #keypad, #binpad, #history, #mode-row {
   background: #777;
@@ -354,124 +366,151 @@ button:focus {
   </div>
 </div>
 
-<div id="keypad">
-  <div class="w3-row">
-    <div class="w3-col s3">
-      <button class="w3-button pukey">(</button>
+<div id="keypad" class="w3-row">
+  <div class="w3-col s9">
+    <div class="w3-row">
+      <div class="w3-col s4">
+        <button class="w3-button pukey">(</button>
+      </div>
+      <div class="w3-col s4">
+        <button class="w3-button pukey">)</button>
+      </div>
+      <div class="w3-col s4">
+        <button class="w3-button pukey">&Sqrt;</button>
+      </div>
     </div>
-    <div class="w3-col s3">
-      <button class="w3-button pukey">)</button>
+
+    <div class="w3-row">
+      <div class="w3-col s4">
+        <button class="w3-button pukey">0x</button>
+      </div>
+      <div class="w3-col s4">
+        <button class="w3-button pukey">0b</button>
+      </div>
+      <div class="w3-col s4">
+        <button class="w3-button opkey"></button>
+      </div>
     </div>
-    <div class="w3-col s3">
-      <button class="w3-button pukey">&Sqrt;</button>
+
+    <div class="w3-row">
+      <div class="w3-col s4">
+        <button class="w3-button numkey hexkey">D</button>
+      </div>
+      <div class="w3-col s4">
+        <button class="w3-button numkey hexkey">E</button>
+      </div>
+      <div class="w3-col s4">
+        <button class="w3-button numkey hexkey">F</button>
+      </div>
     </div>
-    <div class="w3-col s3">
-      <button class="w3-button opkey">^</button>
+
+    <div class="w3-row">
+      <div class="w3-col s4">
+        <button class="w3-button numkey hexkey">A</button>
+      </div>
+      <div class="w3-col s4">
+        <button class="w3-button numkey hexkey">B</button>
+      </div>
+      <div class="w3-col s4">
+        <button class="w3-button numkey hexkey">C</button>
+      </div>
+    </div>
+
+    <div class="w3-row">
+      <div class="w3-col s4">
+        <button class="w3-button numkey hexkey deckey">7</button>
+      </div>
+      <div class="w3-col s4">
+        <button class="w3-button numkey hexkey deckey">8</button>
+      </div>
+      <div class="w3-col s4">
+        <button class="w3-button numkey hexkey deckey">9</button>
+      </div>
+    </div>
+
+    <div class="w3-row">
+      <div class="w3-col s4">
+        <button class="w3-button numkey hexkey deckey">4</button>
+      </div>
+      <div class="w3-col s4">
+        <button class="w3-button numkey hexkey deckey">5</button>
+      </div>
+      <div class="w3-col s4">
+        <button class="w3-button numkey hexkey deckey">6</button>
+      </div>
+    </div>
+
+    <div class="w3-row">
+      <div class="w3-col s4">
+        <button class="w3-button numkey hexkey deckey binkey">1</button>
+      </div>
+      <div class="w3-col s4">
+        <button class="w3-button numkey hexkey deckey">2</button>
+      </div>
+      <div class="w3-col s4">
+        <button class="w3-button numkey hexkey deckey">3</button>
+      </div>
+    </div>
+
+    <div class="w3-row">
+      <div class="w3-col s4">
+        <button class="w3-button spkey">Ans</button>
+      </div>
+      <div class="w3-col s4">
+        <button class="w3-button numkey hexkey deckey binkey">0</button>
+      </div>
+      <div class="w3-col s4">
+        <button class="w3-button numkey hexkey deckey binkey">.</button>
+      </div>
     </div>
   </div>
+  <div class="w3-col s3">
+    <div class="w3-row">
+      <div class="w3-col s12">
+        <button class="w3-button opkey">^</button>
+      </div>
+    </div>
 
-  <div class="w3-row">
-    <div class="w3-col s3">
-      <button class="w3-button pukey">0x</button>
+    <div class="w3-row">
+      <div class="w3-col s12">
+        <button class="w3-button spkey">EXP</button>
+      </div>
     </div>
-    <div class="w3-col s3">
-      <button class="w3-button pukey">0b</button>
-    </div>
-    <div class="w3-col s3">
-      <button class="w3-button opkey"></button>
-    </div>
-    <div class="w3-col s3">
-      <button class="w3-button spkey">EXP</button>
-    </div>
-  </div>
 
-  <div class="w3-row">
-    <div class="w3-col s3">
-      <button class="w3-button numkey hexkey">D</button>
+    <div class="w3-row">
+      <div class="w3-col s12">
+        <button class="w3-button spkey">Del</button>
+      </div>
     </div>
-    <div class="w3-col s3">
-      <button class="w3-button numkey hexkey">E</button>
-    </div>
-    <div class="w3-col s3">
-      <button class="w3-button numkey hexkey">F</button>
-    </div>
-    <div class="w3-col s3">
-      <button class="w3-button spkey">Del</button>
-    </div>
-  </div>
 
-  <div class="w3-row">
-    <div class="w3-col s3">
-      <button class="w3-button numkey hexkey">A</button>
+    <div class="w3-row">
+      <div class="w3-col s12">
+        <button class="w3-button opkey">/</button>
+      </div>
     </div>
-    <div class="w3-col s3">
-      <button class="w3-button numkey hexkey">B</button>
-    </div>
-    <div class="w3-col s3">
-      <button class="w3-button numkey hexkey">C</button>
-    </div>
-    <div class="w3-col s3">
-      <button class="w3-button opkey">/</button>
-    </div>
-  </div>
 
-  <div class="w3-row">
-    <div class="w3-col s3">
-      <button class="w3-button numkey hexkey deckey">7</button>
+    <div class="w3-row">
+      <div class="w3-col s12">
+        <button class="w3-button opkey">*</button>
+      </div>
     </div>
-    <div class="w3-col s3">
-      <button class="w3-button numkey hexkey deckey">8</button>
-    </div>
-    <div class="w3-col s3">
-      <button class="w3-button numkey hexkey deckey">9</button>
-    </div>
-    <div class="w3-col s3">
-      <button class="w3-button opkey">*</button>
-    </div>
-  </div>
 
-  <div class="w3-row">
-    <div class="w3-col s3">
-      <button class="w3-button numkey hexkey deckey">4</button>
+    <div class="w3-row">
+      <div class="w3-col s12">
+        <button class="w3-button opkey">-</button>
+      </div>
     </div>
-    <div class="w3-col s3">
-      <button class="w3-button numkey hexkey deckey">5</button>
-    </div>
-    <div class="w3-col s3">
-      <button class="w3-button numkey hexkey deckey">6</button>
-    </div>
-    <div class="w3-col s3">
-      <button class="w3-button opkey">-</button>
-    </div>
-  </div>
 
-  <div class="w3-row">
-    <div class="w3-col s3">
-      <button class="w3-button numkey hexkey deckey binkey">1</button>
+    <div class="w3-row">
+      <div class="w3-col s12">
+        <button class="w3-button opkey">+</button>
+      </div>
     </div>
-    <div class="w3-col s3">
-      <button class="w3-button numkey hexkey deckey">2</button>
-    </div>
-    <div class="w3-col s3">
-      <button class="w3-button numkey hexkey deckey">3</button>
-    </div>
-    <div class="w3-col s3">
-      <button class="w3-button opkey">+</button>
-    </div>
-  </div>
 
-  <div class="w3-row">
-    <div class="w3-col s3">
-      <button class="w3-button spkey">Ans</button>
-    </div>
-    <div class="w3-col s3">
-      <button class="w3-button numkey hexkey deckey binkey">0</button>
-    </div>
-    <div class="w3-col s3">
-      <button class="w3-button numkey hexkey deckey binkey">.</button>
-    </div>
-    <div class="w3-col s3">
-      <button class="w3-button spkey accent">=</button>
+    <div class="w3-row">
+      <div class="w3-col s12">
+        <button class="w3-button spkey accent">=</button>
+      </div>
     </div>
   </div>
 </div>
