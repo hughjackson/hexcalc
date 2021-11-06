@@ -107,6 +107,12 @@ textarea:focus,
 button:focus {
     outline: none;
 }
+.trig-mode .trig-off, .trig-on  {display: none;}
+.trig-mode .trig-on , .trig-off {display: block;}
+.trig-mode .trig-hi  {
+  background: #6ad045!important;
+  color: white!important;
+}
 .hide {display:none};
 </style>
 <body class="w3-indigo">
@@ -382,11 +388,11 @@ button:focus {
         <button class="w3-button pukey">0b</button>
       </div>
       <div class="w3-col s4">
-        <button class="w3-button opkey">%</button>
+        <button id='trig-btn' class="w3-button spkey trig-hi">trig</button>
       </div>
     </div>
 
-    <div class="w3-row">
+    <div class="w3-row trig-off">
       <div class="w3-col s4">
         <button class="w3-button numkey hexkey">D</button>
       </div>
@@ -398,7 +404,7 @@ button:focus {
       </div>
     </div>
 
-    <div class="w3-row">
+    <div class="w3-row trig-off">
       <div class="w3-col s4">
         <button class="w3-button numkey hexkey">A</button>
       </div>
@@ -407,6 +413,30 @@ button:focus {
       </div>
       <div class="w3-col s4">
         <button class="w3-button numkey hexkey">C</button>
+      </div>
+    </div>
+
+    <div class="w3-row trig-on">
+      <div class="w3-col s4">
+        <button class="w3-button pukey">sin</button>
+      </div>
+      <div class="w3-col s4">
+        <button class="w3-button pukey">cos</button>
+      </div>
+      <div class="w3-col s4">
+        <button class="w3-button pukey">tan</button>
+      </div>
+    </div>
+
+    <div class="w3-row trig-on">
+      <div class="w3-col s4">
+        <button class="w3-button pukey">asin</button>
+      </div>
+      <div class="w3-col s4">
+        <button class="w3-button pukey">acos</button>
+      </div>
+      <div class="w3-col s4">
+        <button class="w3-button pukey">atan</button>
       </div>
     </div>
 
@@ -462,28 +492,28 @@ button:focus {
 
     <div class="w3-row">
       <div class="w3-col s12">
-        <button class="w3-button opkey">log</button>
+        <button class="w3-button pukey">log</button>
       </div>
       <div class="w3-col s12">
-        <button class="w3-button opkey">ln</button>
-      </div>
-    </div>
-
-    <div class="w3-row">
-      <div class="w3-col s12">
-        <button class="w3-button opkey">e</button>
-      </div>
-      <div class="w3-col s12">
-        <button class="w3-button opkey">pi</button>
+        <button class="w3-button pukey">ln</button>
       </div>
     </div>
 
     <div class="w3-row">
       <div class="w3-col s12">
-        <button class="w3-button opkey">(</button>
+        <button class="w3-button pukey">e</button>
       </div>
       <div class="w3-col s12">
-        <button class="w3-button opkey">)</button>
+        <button class="w3-button pukey">pi</button>
+      </div>
+    </div>
+
+    <div class="w3-row">
+      <div class="w3-col s12">
+        <button class="w3-button pukey">(</button>
+      </div>
+      <div class="w3-col s12">
+        <button class="w3-button pukey">)</button>
       </div>
     </div>
 
@@ -636,6 +666,11 @@ function updateKeyMode(mode) {
   for (i=0; i< buttons.length; i++) {
     buttons[i].disabled = false
   }
+}
+// update trig mode
+function toggleTrigMode() {
+  trigMode = !trigMode;
+  document.body.classList.toggle('trig-mode')
 }
 // Update the mode
 function updateMode(op) {
@@ -799,6 +834,8 @@ function evaluate(cmd) {
   cmd =  cmd.replace(/_|,/g, "")
             .replace(/([^0-9A-Fx]|^)√([0-9A-Fx]*)/g, "$1($2^(1/2))")
             .replace(/([0-9A-Fx]*)√([0-9A-Fx]*)/g, "($2^(1/$1))")
+            .replace(/log/g, "log10")
+            .replace(/ln/g, "log")
             //.replace(/k\b/,'e+3')
             //.replace(/M\b/,'e+6')
             //.replace(/G\b/,'e+9')
@@ -842,12 +879,13 @@ function keyClick(key) {
   output = decout
 
   // clear before entry
-  if (clear && key.innerText != "=" && key.innerText != "Del")
+  if (clear && key.innerText != "=" && key.innerText != "Del" && key.innerText != 'trig') {
     if (key.className.indexOf('opkey') != -1)
       output.innerText = numString(ans, length)
     else
       output.innerText = ""
     clear = false
+  }
 
   if (key.className.indexOf('spkey') == -1) {
     output.innerText += key.innerText
@@ -898,6 +936,9 @@ function keyClick(key) {
     case '0b':
       updateKeyMode('bin')
       break
+    case 'trig':
+      toggleTrigMode()
+      break
     case 'EXP':
       output.innerText += 'e'
     default:
@@ -946,6 +987,7 @@ for (i=0; i< outputs.length; i++) {
 updateNotation('fixed')
 updateMode('dec')
 updateWordsize('0')
+trigMode = false;
 
 outputs = document.getElementsByClassName('pad-sel')
 for (i=0; i< outputs.length; i++) {
