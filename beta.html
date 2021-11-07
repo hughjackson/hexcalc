@@ -546,7 +546,7 @@ button:focus {
 
     <div class="w3-row">
       <div class="w3-col s6">
-        <button class="w3-button spkey">Del</button>
+        <button id='del-btn' data-long-press-delay="500" class="w3-button spkey">Del</button>
       </div>
       <div style='flex-grow:1'></div>
       <div class="w3-col s6">
@@ -564,11 +564,21 @@ button:focus {
   crossorigin="anonymous" 
   referrerpolicy="no-referrer">
 </script>
+<script src="long-press-event.min.js"></script>
 <script>
 ans=0
 clear=true
 mode='dec'
 console.log(math.format(555, {"notation":'exponential'}))
+
+document.getElementById('del-btn').addEventListener('long-press', (e) => {
+  console.log('long-press')
+  output = document.getElementById('disp')
+  preview = document.getElementById('prev')
+  output.innerText = "0"
+  clear = true;
+  preview.innerHTML = "&nbsp"
+})
 
 // Number to string
 function numString(num, radix) {
