@@ -13,14 +13,14 @@
 .w3-select {background: none; color: white; border: none}
 body {display:flex; flex-flow:column; height:100vh; max-width:600px; margin:auto}
 #display {flex: 0 1 auto; display: flex; height:100%}
-#disp-btns {display:flex; flex-direction: column}
+#disp-btns {display:flex; flex-direction: column; flex-grow:1}
 #disp-btns>* {flex-grow:1}
-#disp-input {flex-grow:1; display:flex; flex-direction: column;}
+#disp-input {flex-grow:100; display:flex; flex-direction: column; max-width:500px}
 #keypad, #binpad {flex: 1 0 auto; font-size: 24px!important; justify-content: space-between;}
 #binpad {flex-flow:column}
 #keypad {display:flex}
 #binpad {display:none}
-.output {padding:8px; text-align:right; flex-grow:1}
+.output {padding:8px; text-align:right; flex-grow:1; overflow:auto}
 #preview {text-align:right;}
 .w3-row {flex: 1 1 auto; display:flex; flex-flow:row}
 .w3-col {display:flex; flex-flow:column; height:fit-content}
